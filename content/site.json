@@ -14,11 +14,14 @@
   },
   "keywords": [
     "Python",
+    "TypeScript",
     "Elasticsearch",
     "C#/.NET",
     "GCP",
     "Terraform",
-    "Next.js"
+    "Next.js",
+    "React",
+    "SQL"
   ],
   "nav": [
     { "label": "Home", "href": "/" },
