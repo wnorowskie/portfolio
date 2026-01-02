@@ -40,7 +40,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </div>
       <div className="mt-auto flex flex-wrap items-center gap-4 text-sm font-semibold text-ink/70">
         <Link className="hover:text-ink" href={detailHref}>
-          View case study
+          View project details
         </Link>
         {project.links.demo ? (
           <Link className="hover:text-ink" href={project.links.demo}>
