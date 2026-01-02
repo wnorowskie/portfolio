@@ -6,7 +6,7 @@ import Tag from "@/components/tag";
 import { getAllProjectSlugs, getProjectBySlug } from "@/lib/content";
 
 type ProjectPageProps = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
@@ -14,7 +14,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const project = await getProjectBySlug(slug);
 
   if (!project) {
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const project = await getProjectBySlug(slug);
 
   if (!project) {
