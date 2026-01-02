@@ -1,0 +1,64 @@
+---
+slug: soccer-data-pipeline
+title: Soccer Data Pipeline
+date: 2025-07-15
+featured: true
+category: Backend
+tags:
+  - Python
+  - Terraform
+  - Postgres
+  - GCP
+  - Serverless
+links:
+  repo: ""
+  demo: ""
+  writeup: "/projects/soccer-data-pipeline"
+hero:
+  summary: "ETL pipeline that transforms live soccer data into a queryable Postgres warehouse."
+  impactBullets:
+    - "Ingests raw feeds and normalizes data for API consumption"
+    - "Serverless architecture for elastic scaling"
+images:
+  - "/images/projects/soccer-data-pipeline/data-pipeline-flow.png"
+---
+
+# Summary
+
+Soccer Data Pipeline is an ETL system that ingests raw soccer data and transforms it into structured tables for downstream APIs and analytics.
+
+## Problem / Motivation
+
+Raw match data arrives in inconsistent formats and needs to be normalized quickly for real-time insights.
+
+## Architecture
+
+- Cloud Functions for ingest + transform
+- Pub/Sub for event-driven processing
+- Postgres as the canonical warehouse
+- Terraform for repeatable infra
+
+## Key Technical Decisions + Tradeoffs
+
+- **Serverless functions** for bursty ingestion workloads, accepting cold starts as the tradeoff.
+- **Postgres schema design** optimized for read-heavy API usage.
+
+## Reliability / Performance / Security
+
+- Idempotent transforms and retry logic
+- Schema validation and deduplication
+- Principle of least privilege for service accounts
+
+## Results / Impact
+
+- Reliable data availability for API consumers
+- Reduced latency for live match updates
+
+## What I’d Improve Next
+
+- Add streaming analytics for near-real-time dashboards
+- Extend coverage to additional data providers
+
+## Evidence
+
+- Pipeline diagram and repo link (GitLab)

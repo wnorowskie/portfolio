@@ -1,0 +1,65 @@
+---
+slug: family-recipe-app
+title: Family Recipe App
+date: 2025-12-01
+featured: true
+category: Full Stack
+tags:
+  - Next.js
+  - React
+  - Python
+  - Postgres
+  - Terraform
+  - GCP
+links:
+  repo: ""
+  demo: ""
+  writeup: "/projects/family-recipe-app"
+hero:
+  summary: "Production-grade recipe sharing platform with IaC, observability, and secure deployment."
+  impactBullets:
+    - "Shipped an end-to-end app used by family to share and preserve recipes"
+    - "Infra-as-code and CI/CD designed for maintainability"
+images: []
+---
+
+# Summary
+
+Family Recipe App is a private, production-style web app that makes it easy for my family to post, discover, and preserve recipes with a social sharing experience.
+
+## Problem / Motivation
+
+We needed a centralized place to share recipes without relying on group chats or scattered notes, while keeping the system reliable, secure, and easy to maintain.
+
+## Architecture
+
+- Next.js frontend + API layer
+- Python services for background processing
+- Postgres for core data storage
+- Terraform-managed infrastructure on GCP
+
+## Key Technical Decisions + Tradeoffs
+
+- **Next.js + API routes** for fast iteration while keeping deployment simple.
+- **Terraform + managed services** to reduce operational overhead at the cost of higher upfront setup.
+- **Production-first constraints** (auth, observability) to keep the system durable even for a small user base.
+
+## Reliability / Performance / Security
+
+- Health checks and monitoring dashboards
+- Role-based access patterns and private hosting
+- Focus on fast, predictable page loads
+
+## Results / Impact
+
+- Family members actively using the app to share meals
+- Lower friction for posting and discovering recipes
+
+## What I’d Improve Next
+
+- Add recipe collections and meal planning
+- Expand image optimization and search
+
+## Evidence
+
+- Repo link and screenshots coming soon

@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-canvas: oklch(0.98 0.01 220);
+  --color-fog: oklch(0.95 0.015 220);
+  --color-mist: oklch(0.91 0.02 220);
+  --color-ice: oklch(0.82 0.03 220);
+  --color-ink: oklch(0.22 0.03 240);
+  --color-ink-strong: oklch(0.16 0.03 240);
+  --color-accent: oklch(0.55 0.06 220);
+  --color-accent-strong: oklch(0.45 0.07 220);
+  --font-body: var(--font-sora);
+  --font-display: var(--font-fraunces);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-canvas text-ink;
+    font-family: var(--font-body);
+  }
+}
+
+@layer components {
+  .rich h2 {
+    @apply font-display text-2xl text-ink;
+  }
+  .rich h3 {
+    @apply font-display text-xl text-ink;
+  }
+  .rich p {
+    @apply leading-7 text-ink/70;
+  }
+  .rich ul {
+    @apply list-disc space-y-2 pl-5 text-ink/70;
+  }
+  .rich a {
+    @apply font-medium text-ink underline-offset-4 hover:underline;
+  }
+}

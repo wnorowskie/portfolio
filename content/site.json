@@ -1,0 +1,29 @@
+{
+  "name": "Eric Wnorowski",
+  "title": "Software Engineer — Full-Stack / Backend / Search",
+  "summary": "Full-Stack Engineer with expertise in search, data pipelines, and web applications.",
+  "location": "NJ / NYC",
+  "email": "ericwnorowski@gmail.com",
+  "phone": "908-910-5832",
+  "headshot": "/images/portrait.jpeg",
+  "links": {
+    "github": "https://github.com/wnorowskie",
+    "gitlab": "https://gitlab.com/ericwnorowski",
+    "linkedin": "https://www.linkedin.com/in/eric-wnorowski",
+    "resume": "/resume"
+  },
+  "keywords": [
+    "Python",
+    "Elasticsearch",
+    "C#/.NET",
+    "GCP",
+    "Terraform",
+    "Next.js"
+  ],
+  "nav": [
+    { "label": "Home", "href": "/" },
+    { "label": "Projects", "href": "/projects" },
+    { "label": "Experience", "href": "/experience" },
+    { "label": "Contact", "href": "/contact" }
+  ]
+}
