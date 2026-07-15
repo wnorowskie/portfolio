@@ -247,6 +247,25 @@ confidentialityNote: "Details sanitized; architecture and tradeoffs described at
 ---
 ```
 
+#### Site config (`content/site.json`)
+
+Global site config loaded via `getSiteConfig()` (typed by `SiteConfig` in `lib/site.ts`). In addition to identity, links, keywords, and nav, it carries an `education` array rendered as a section at the bottom of `/experience`:
+
+```json
+{
+  "education": [
+    {
+      "school": "College of Charleston",
+      "location": "Charleston, SC",
+      "degree": "Master of Science, Computer and Information Sciences (Software Engineering)",
+      "detail": "GPA 3.9"
+    }
+  ]
+}
+```
+
+Each entry requires `school`, `location`, and `degree`; `detail` (e.g. GPA) is optional.
+
 ### 5.5 Repo Structure
 
 ```

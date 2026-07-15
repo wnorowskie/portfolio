@@ -22,19 +22,19 @@ Ordered by priority.
 
 ## P1 — Missing content (the "all of my information" gaps)
 
-- [ ] **Add the Software Engineer II promotion.** The 2026 resume's latest role is SWE II,
+- [x] **Add the Software Engineer II promotion.** The 2026 resume's latest role is SWE II,
   but the site's most recent entry ([content/experience/constructconnect-swe.mdx](content/experience/constructconnect-swe.mdx))
   is still "Software Engineer I". Add a new SWE II entry (Elasticsearch API for 75,000+
   customers, ingestion pipelines, DevOps/Terraform ownership) and rescope the SWE I entry
   to the Modernized Search bullets it now carries on the resume (document viewer with
   1000+ page docs loading < 1s, Quality Engineering partnership on automation and
   performance tests).
-- [ ] **Add an Education section.** The resume lists an MS from College of Charleston
+- [x] **Add an Education section.** The resume lists an MS from College of Charleston
   (GPA 3.9, Software Engineering) and a BA from Vassar College (CS + Economics minor,
   GPA 3.7) — none of it appears anywhere on the site. Decide placement (home page section,
   experience page, or a small block driven from `site.json` / a new content type) and
   update SPEC §5.4 + validators if a schema is added.
-- [ ] **Add the "DevX AI Enablement" project.** On the 2026 resume (formerly "AI
+- [x] **Add the "DevX AI Enablement" project.** On the 2026 resume (formerly "AI
   Multi-Agentic Autonomous Coder" on the 2025 draft) but has no `content/projects/*.mdx`
   file: AI Center of Excellence membership, Claude Code agents/skills/hooks across the
   SDLC, and an agentic workflow from JIRA ticket → code changes → docs → merge request →
@@ -45,7 +45,7 @@ Ordered by priority.
   Add screenshots under `public/images/projects/family-recipe-app/`.
 - [ ] **Add evidence images for Student Service Center.** Same issue: `images: []` and
   "Screenshots and demo link coming soon."
-- [ ] **Turn the Evidence sections into real links.** All three project MDX bodies list
+- [x] **Turn the Evidence sections into real links.** All three project MDX bodies list
   evidence as plain text ("GitHub Repo", "Pipeline diagram and repo link") instead of
   actual markdown links. Link them or render evidence from frontmatter.
 - [ ] **Fill in demo links or drop the placeholders.** All three projects have `demo: ""`.
@@ -54,7 +54,7 @@ Ordered by priority.
   ships a visible "Placeholder for now while we align on content" box to visitors. Either
   add the plain-HTML resume content (SPEC §6.5) — the 2026 `.docx` is the content source —
   or remove the box until it's ready.
-- [ ] **Add `confidentialityNote` to the experience entries.** The schema and
+- [x] **Add `confidentialityNote` to the experience entries.** The schema and
   [components/experience-card.tsx](components/experience-card.tsx#L42-L44) support it, and
   SPEC §6.4 calls for a visible confidentiality note, but none of the three
   `content/experience/*.mdx` files set it.

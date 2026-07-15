@@ -8,7 +8,9 @@ type ExperienceCardProps = {
 export default function ExperienceCard({ entry }: ExperienceCardProps) {
   const { frontmatter, content } = entry;
   const formatDate = (value: string | null) =>
-    value ? new Date(value).toLocaleString("en-US", { month: "short", year: "numeric" }) : "Present";
+    value
+      ? new Date(value).toLocaleString("en-US", { month: "short", year: "numeric", timeZone: "UTC" })
+      : "Present";
 
   return (
     <div className="rounded-2xl border border-ink/10 bg-white/70 p-6 shadow-sm">

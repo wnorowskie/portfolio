@@ -28,5 +28,19 @@
     { "label": "Projects", "href": "/projects" },
     { "label": "Experience", "href": "/experience" },
     { "label": "Contact", "href": "/contact" }
+  ],
+  "education": [
+    {
+      "school": "College of Charleston",
+      "location": "Charleston, SC",
+      "degree": "Master of Science, Computer and Information Sciences (Software Engineering)",
+      "detail": "GPA 3.9"
+    },
+    {
+      "school": "Vassar College",
+      "location": "Poughkeepsie, NY",
+      "degree": "Bachelor of Arts, Computer Science; Economics Minor",
+      "detail": "GPA 3.7"
+    }
   ]
 }
