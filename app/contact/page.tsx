@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import ExternalLink from "@/components/external-link";
 import { getSiteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -36,15 +37,15 @@ export default function ContactPage() {
             Links
           </p>
           <div className="mt-3 space-y-2 text-sm text-ink/70">
-            <Link className="block hover:text-ink" href={site.links.linkedin}>
+            <ExternalLink className="block hover:text-ink" href={site.links.linkedin}>
               LinkedIn
-            </Link>
-            <Link className="block hover:text-ink" href={site.links.github}>
+            </ExternalLink>
+            <ExternalLink className="block hover:text-ink" href={site.links.github}>
               GitHub
-            </Link>
-            <Link className="block hover:text-ink" href={site.links.gitlab}>
+            </ExternalLink>
+            <ExternalLink className="block hover:text-ink" href={site.links.gitlab}>
               GitLab
-            </Link>
+            </ExternalLink>
             <Link className="block hover:text-ink" href="/resume">
               Resume PDF
             </Link>

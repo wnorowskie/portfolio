@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ExternalLink from "@/components/external-link";
 import ProjectCard from "@/components/project-card";
 import { getFeaturedProjects } from "@/lib/content";
 import { getSiteConfig } from "@/lib/site";
@@ -103,9 +104,7 @@ export default function Home() {
             <li>Search and data pipeline engineering with Elasticsearch</li>
             <li>Infrastructure-as-code and production reliability ownership</li>
             <li>Practical full-stack delivery with modern React/Next.js</li>
-            <li>Machine learning and AI integration</li>
-            <li>Quality engineering and test automation</li>
-            <li>Cross-functional collaboration and leadership</li>
+            <li>AI and agentic tooling integration</li>
           </ul>
         </div>
         <div className="rounded-2xl border border-ink/10 bg-white/70 p-6 shadow-sm">
@@ -113,15 +112,15 @@ export default function Home() {
             Quick links
           </p>
           <div className="mt-4 space-y-2 text-sm text-ink/70">
-            <Link className="block hover:text-ink" href={site.links.github}>
+            <ExternalLink className="block hover:text-ink" href={site.links.github}>
               GitHub
-            </Link>
-            <Link className="block hover:text-ink" href={site.links.gitlab}>
+            </ExternalLink>
+            <ExternalLink className="block hover:text-ink" href={site.links.gitlab}>
               GitLab
-            </Link>
-            <Link className="block hover:text-ink" href={site.links.linkedin}>
+            </ExternalLink>
+            <ExternalLink className="block hover:text-ink" href={site.links.linkedin}>
               LinkedIn
-            </Link>
+            </ExternalLink>
             <Link className="block hover:text-ink" href="/experience">
               Experience timeline
             </Link>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ExternalLink from "@/components/external-link";
 import Tag from "@/components/tag";
 import { ProjectFrontmatter } from "@/lib/content";
 
@@ -44,14 +45,14 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           View project details
         </Link>
         {project.links.demo ? (
-          <Link className="hover:text-ink" href={project.links.demo}>
+          <ExternalLink className="hover:text-ink" href={project.links.demo}>
             Live demo
-          </Link>
+          </ExternalLink>
         ) : null}
         {project.links.repo ? (
-          <Link className="hover:text-ink" href={project.links.repo}>
+          <ExternalLink className="hover:text-ink" href={project.links.repo}>
             Repo
-          </Link>
+          </ExternalLink>
         ) : null}
       </div>
     </div>

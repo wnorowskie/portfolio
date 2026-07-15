@@ -24,11 +24,14 @@ export default async function ExperiencePage() {
           machine learning, AI, quality engineering, and production reliability.
         </p>
       </div>
-      <div className="space-y-6">
-        {experience.map((entry) => (
-          <ExperienceCard key={`${entry.frontmatter.company}-${entry.frontmatter.role}`} entry={entry} />
-        ))}
-      </div>
+      <section className="space-y-6">
+        <h2 className="font-display text-2xl text-ink">Roles</h2>
+        <div className="space-y-6">
+          {experience.map((entry) => (
+            <ExperienceCard key={`${entry.frontmatter.company}-${entry.frontmatter.role}`} entry={entry} />
+          ))}
+        </div>
+      </section>
 
       {education.length > 0 ? (
         <section className="space-y-6">

@@ -83,22 +83,22 @@ Ordered by priority.
 
 ## P3 — Polish & hygiene
 
-- [ ] **Replace the default Next.js favicon** (`app/favicon.ico` is the stock one) with a
+- [x] **Replace the default Next.js favicon** (`app/favicon.ico` is the stock one) with a
   personal icon.
-- [ ] **Open external links in a new tab.** GitHub/GitLab/LinkedIn links in the header,
+- [x] **Open external links in a new tab.** GitHub/GitLab/LinkedIn links in the header,
   footer, cards, and contact page render without `target="_blank" rel="noreferrer"`.
-- [ ] **Trim Core strengths to 3–5 bullets.** Home page lists 7; SPEC §4.2 says 3–5 to keep
+- [x] **Trim Core strengths to 3–5 bullets.** Home page lists 7; SPEC §4.2 says 3–5 to keep
   signal density.
-- [ ] **Remove the phone number from `site.json`.** It's in the (public) repo but never
+- [x] **Remove the phone number from `site.json`.** It's in the (public) repo but never
   rendered, and the 2026 resume dropped it from the header — remove it from the site
   config to match.
-- [ ] **Repo hygiene.** Commit `CLAUDE.md` (currently untracked); remove or relocate the
+- [x] **Repo hygiene.** Commit `CLAUDE.md` (currently untracked); remove or relocate the
   stray `portfolio.jpeg` at the repo root (the site uses `public/images/portrait.jpeg`);
   delete or update the now-stale `eric_wnorowski_resume.tex` (still has 2025 content, the
   phone number, and the old project name); keep the 5.4 MB
   `Eric Wnorowski Resume 2026.docx` out of git (gitignore it) once the PDF is moved into
   `public/resume/`.
-- [ ] **Add a custom `not-found.tsx`** so bad project slugs get a branded 404.
+- [x] **Add a custom `not-found.tsx`** so bad project slugs get a branded 404.
 - [ ] **Run an accessibility + Lighthouse pass** (targets: ≥95 across the board, SPEC §2.3)
   once content is in — check heading order, tag-filter keyboard support, alt text on
   project images (currently generic "screenshot" alt).

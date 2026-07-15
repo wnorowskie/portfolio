@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ExternalLink from "@/components/external-link";
 import { getSiteConfig } from "@/lib/site";
 
 export default function SiteFooter() {
@@ -15,15 +16,15 @@ export default function SiteFooter() {
           <Link className="hover:text-ink" href={`mailto:${site.email}`}>
             {site.email}
           </Link>
-          <Link className="hover:text-ink" href={site.links.linkedin}>
+          <ExternalLink className="hover:text-ink" href={site.links.linkedin}>
             LinkedIn
-          </Link>
-          <Link className="hover:text-ink" href={site.links.github}>
+          </ExternalLink>
+          <ExternalLink className="hover:text-ink" href={site.links.github}>
             GitHub
-          </Link>
-          <Link className="hover:text-ink" href={site.links.gitlab}>
+          </ExternalLink>
+          <ExternalLink className="hover:text-ink" href={site.links.gitlab}>
             GitLab
-          </Link>
+          </ExternalLink>
         </div>
       </div>
     </footer>
