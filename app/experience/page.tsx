@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ExperienceCard from "@/components/experience-card";
 import { getAllExperience } from "@/lib/content";
+import { getSiteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Experience",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 
 export default async function ExperiencePage() {
   const experience = await getAllExperience();
+  const { education } = getSiteConfig();
 
   return (
     <div className="space-y-10">
@@ -27,6 +29,31 @@ export default async function ExperiencePage() {
           <ExperienceCard key={`${entry.frontmatter.company}-${entry.frontmatter.role}`} entry={entry} />
         ))}
       </div>
+
+      {education.length > 0 ? (
+        <section className="space-y-6">
+          <h2 className="font-display text-2xl text-ink">Education</h2>
+          <div className="space-y-6">
+            {education.map((school) => (
+              <div
+                key={`${school.school}-${school.degree}`}
+                className="rounded-2xl border border-ink/10 bg-white/70 p-6 shadow-sm"
+              >
+                <div className="flex flex-col gap-1 md:flex-row md:items-start md:justify-between">
+                  <div>
+                    <h3 className="text-xl font-semibold text-ink">{school.school}</h3>
+                    <p className="text-sm text-ink/70">{school.degree}</p>
+                  </div>
+                  <p className="text-sm text-ink/60">{school.location}</p>
+                </div>
+                {school.detail ? (
+                  <p className="mt-4 text-xs text-ink/50">{school.detail}</p>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }

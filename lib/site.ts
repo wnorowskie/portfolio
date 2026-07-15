@@ -14,6 +14,13 @@ export type SiteNavItem = {
   href: string;
 };
 
+export type SiteEducation = {
+  school: string;
+  location: string;
+  degree: string;
+  detail?: string;
+};
+
 export type SiteConfig = {
   name: string;
   title: string;
@@ -25,6 +32,7 @@ export type SiteConfig = {
   links: SiteLink;
   keywords: string[];
   nav: SiteNavItem[];
+  education: SiteEducation[];
 };
 
 const SITE_PATH = path.join(process.cwd(), "content", "site.json");

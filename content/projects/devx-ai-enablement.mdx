@@ -1,0 +1,70 @@
+---
+slug: devx-ai-enablement
+title: DevX AI Enablement
+date: 2026-06-01
+featured: false
+category: Developer Experience
+tags:
+  - AI
+  - Claude Code
+  - Agents
+  - Developer Experience
+  - Automation
+links:
+  repo: ""
+  demo: ""
+  writeup: "/projects/devx-ai-enablement"
+hero:
+  summary: "Agentic developer tooling — Claude Code agents, skills, and hooks that assist across the software development lifecycle."
+  impactBullets:
+    - "Built AI agents, skills, and hooks spanning the full SDLC"
+    - "Designed an agentic workflow from ticket pickup to merge request and test plan"
+images: []
+---
+
+# Summary
+
+DevX AI Enablement is internal developer-experience work focused on making AI a dependable teammate across the software development lifecycle. As part of an AI Center of Excellence, I build and design Claude Code agents, skills, and hooks that help engineers move from a tracked issue to reviewed, documented, tested changes with less manual overhead.
+
+## Problem / Motivation
+
+Engineers spend a large share of their time on repetitive, context-heavy steps: reading a ticket, orienting in the codebase, wiring up changes, updating docs, opening a merge request, and drafting a test plan. The goal was to encode that path as reusable AI tooling so the routine parts are assisted or automated, and engineers keep their attention on design and judgment.
+
+## Architecture
+
+- **Agents** — task-scoped assistants that carry a job (e.g. implement a change, draft a review) end to end.
+- **Skills** — reusable, composable capabilities agents invoke for specific steps in the lifecycle.
+- **Hooks** — deterministic automation triggered around agent and tool actions to enforce conventions and guardrails.
+
+## Key Technical Decisions + Tradeoffs
+
+- **Composable skills over monolithic prompts** — small, reusable capabilities are easier to test and combine, at the cost of more upfront design.
+- **Hooks for guardrails** — deterministic checks around agent actions keep automation predictable, trading some flexibility for reliability.
+- **Human-in-the-loop by default** — the workflow proposes changes and review artifacts rather than merging autonomously, prioritizing trust over full automation.
+
+## Reliability / Performance / Security
+
+- Guardrails and review steps keep generated changes auditable before they land.
+- Automation is scoped and reviewable rather than fully autonomous.
+
+## Results / Impact
+
+- Reusable agents, skills, and hooks that assist engineers across the SDLC.
+- A repeatable agentic path from ticket to merge request, reducing manual overhead on routine steps.
+
+## What I’d Improve Next
+
+- Broaden skill coverage across more lifecycle steps.
+- Tighten feedback loops so agents learn from review outcomes.
+
+## Evidence
+
+An end-to-end agentic workflow guides an agent through the development lifecycle:
+
+1. **Pick up a ticket** — read the tracked issue and gather context from the codebase.
+2. **Make the code changes** — implement the change against the issue's acceptance criteria.
+3. **Update documentation** — keep docs in sync with the change.
+4. **Open a merge request** — assemble the change for review.
+5. **Draft a test plan** — outline how the change is validated before release.
+
+_No public repository — this is internal developer-experience work, described here at a high level._
