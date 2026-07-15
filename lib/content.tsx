@@ -3,6 +3,8 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
+import type { AnchorHTMLAttributes } from "react";
+import ExternalLink from "@/components/external-link";
 
 export type ProjectLinks = {
   repo?: string;
@@ -51,6 +53,24 @@ export type ExperienceEntry = {
 
 const PROJECTS_DIR = path.join(process.cwd(), "content", "projects");
 const EXPERIENCE_DIR = path.join(process.cwd(), "content", "experience");
+
+function MdxLink({ href, children, ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) {
+  if (href?.startsWith("http")) {
+    return (
+      <ExternalLink href={href} {...props}>
+        {children}
+      </ExternalLink>
+    );
+  }
+
+  return (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  );
+}
+
+const mdxComponents = { a: MdxLink };
 
 function getMdxFiles(directory: string) {
   return fs
@@ -149,6 +169,7 @@ export async function getProjectBySlug(slug: string): Promise<ProjectContent | n
   const source = fs.readFileSync(filePath, "utf8");
   const { content, frontmatter } = await compileMDX<ProjectFrontmatter>({
     source,
+    components: mdxComponents,
     options: { parseFrontmatter: true },
   });
 
@@ -168,6 +189,7 @@ export async function getAllExperience(): Promise<ExperienceEntry[]> {
       const source = fs.readFileSync(filePath, "utf8");
       const { content, frontmatter } = await compileMDX<ExperienceFrontmatter>({
         source,
+        components: mdxComponents,
         options: { parseFrontmatter: true },
       });
 
