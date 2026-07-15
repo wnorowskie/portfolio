@@ -1,4 +1,4 @@
-import { ProjectFrontmatter } from "@/lib/content";
+import type { ProjectFrontmatter } from "@/lib/content";
 
 export function normalizeTag(tag: string) {
   return tag.trim();

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Download or view the resume PDF.",
 };
 
-const resumePath = "/resume/Eric_Wnorowski_Resume_2025.pdf";
+const resumePath = "/resume/Eric_Wnorowski_Resume_2026.pdf";
 
 export default function ResumePage() {
   return (
