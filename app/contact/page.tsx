@@ -14,7 +14,7 @@ export default function ContactPage() {
   return (
     <div className="space-y-10">
       <div className="space-y-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">Contact</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-ink/65">Contact</p>
         <h1 className="font-display text-3xl text-ink md:text-4xl">Let’s connect</h1>
         <p className="max-w-2xl text-base text-ink/70">
           Fastest response via email or LinkedIn. Always happy to talk about backend,
@@ -24,7 +24,7 @@ export default function ContactPage() {
 
       <div className="grid gap-6 md:grid-cols-2">
         <div className="rounded-2xl border border-ink/10 bg-white/70 p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/50">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/65">
             Email
           </p>
           <Link className="mt-3 block text-lg font-semibold text-ink" href={`mailto:${site.email}`}>
@@ -33,7 +33,7 @@ export default function ContactPage() {
           <p className="mt-2 text-sm text-ink/70">{site.location}</p>
         </div>
         <div className="rounded-2xl border border-ink/10 bg-white/70 p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/50">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/65">
             Links
           </p>
           <div className="mt-3 space-y-2 text-sm text-ink/70">

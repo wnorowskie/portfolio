@@ -19,7 +19,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <div className="flex h-full flex-col gap-6 rounded-3xl border border-ink/10 bg-white/70 p-8 shadow-sm transition hover:-translate-y-1 hover:border-ink/30 hover:shadow-lg">
       <div className="space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-ink/50">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-ink/65">
           <span>{project.category}</span>
           <span>{formattedDate}</span>
         </div>

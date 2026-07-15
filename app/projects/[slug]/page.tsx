@@ -82,11 +82,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
       />
       <section className="space-y-4">
-        <Link className="text-sm font-semibold text-ink/60 hover:text-ink" href="/projects">
+        <Link className="text-sm font-semibold text-ink/70 hover:text-ink" href="/projects">
           ← Back to projects
         </Link>
         <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-ink/65">
             {project.frontmatter.category}
           </p>
           <h1 className="font-display text-3xl text-ink md:text-4xl">

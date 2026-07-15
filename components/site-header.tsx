@@ -12,11 +12,11 @@ export default function SiteHeader() {
             <Link className="text-lg font-semibold tracking-tight text-ink" href="/">
               {site.name}
             </Link>
-            <span className="text-xs uppercase tracking-[0.2em] text-ink/60">
+            <span className="text-xs uppercase tracking-[0.2em] text-ink/70">
               {site.title}
             </span>
           </div>
-          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-ink/60 md:text-sm md:tracking-normal">
+          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-ink/70 md:text-sm md:tracking-normal">
             <nav className="flex flex-wrap items-center gap-4">
               {site.nav.map((item) => (
                 <Link

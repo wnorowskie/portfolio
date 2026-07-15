@@ -108,7 +108,7 @@ export default function Home() {
           </ul>
         </div>
         <div className="rounded-2xl border border-ink/10 bg-white/70 p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/50">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/65">
             Quick links
           </p>
           <div className="mt-4 space-y-2 text-sm text-ink/70">
