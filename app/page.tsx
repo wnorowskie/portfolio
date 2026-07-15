@@ -8,8 +8,21 @@ export default function Home() {
   const site = getSiteConfig();
   const featuredProjects = getFeaturedProjects();
 
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: site.name,
+    jobTitle: site.title,
+    url: site.url,
+    sameAs: [site.links.github, site.links.gitlab, site.links.linkedin],
+  };
+
   return (
     <div className="space-y-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
       <section className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div className="space-y-6">
           <h1 className="font-display text-4xl leading-tight text-ink md:text-5xl">
