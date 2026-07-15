@@ -112,7 +112,8 @@ Ordered by priority.
   `https://eric-wnorowski-portfolio.vercel.app` (confirmed 2026-07-15). Decision: staying
   on the `.vercel.app` domain — the resume's `eric-wnorowski-portfolio.app` link should be
   updated to match, since that domain is unattached and does not resolve.
-- [ ] **Decide whether to feature the athletic career.** Eric played NCAA men's soccer
-  (Vassar, then College of Charleston during the Masters). Options if yes: a `detail`
-  line on the education entries, a short "Beyond code" home-page line, and/or a sentence
-  in the Soccer Data Pipeline writeup connecting the project to playing experience.
+- [x] **Feature the athletic career.** Decided yes (2026-07-15): an `athletics` array in
+  `site.json` renders an Athletics section on `/experience` below Education (SCU Heat /
+  US Open Cup, College of Charleston NCAA DI, Real Central NJ USL2, Vassar NCAA DIII with
+  the goalkeeping records), plus a first-person tie-in sentence in the Soccer Data
+  Pipeline writeup.

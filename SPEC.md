@@ -249,7 +249,7 @@ confidentialityNote: "Details sanitized; architecture and tradeoffs described at
 
 #### Site config (`content/site.json`)
 
-Global site config loaded via `getSiteConfig()` (typed by `SiteConfig` in `lib/site.ts`). It carries a required `url` field — the canonical production origin (e.g. `"https://eric-wnorowski-portfolio.vercel.app"`, no trailing slash) — used for `metadataBase`, Open Graph URLs, the sitemap, robots.txt, and JSON-LD. In addition to identity, links, keywords, and nav, it also carries an `education` array rendered as a section at the bottom of `/experience`:
+Global site config loaded via `getSiteConfig()` (typed by `SiteConfig` in `lib/site.ts`). It carries a required `url` field — the canonical production origin (e.g. `"https://eric-wnorowski-portfolio.vercel.app"`, no trailing slash) — used for `metadataBase`, Open Graph URLs, the sitemap, robots.txt, and JSON-LD. In addition to identity, links, keywords, and nav, it also carries `education` and `athletics` arrays, rendered as sections at the bottom of `/experience` (in that order, after Roles):
 
 ```json
 {
@@ -261,11 +261,20 @@ Global site config loaded via `getSiteConfig()` (typed by `SiteConfig` in `lib/s
       "degree": "Master of Science, Computer and Information Sciences (Software Engineering)",
       "detail": "GPA 3.9"
     }
+  ],
+  "athletics": [
+    {
+      "team": "Vassar College",
+      "location": "Poughkeepsie, NY",
+      "league": "NCAA Division III",
+      "years": "2019 – 2022",
+      "highlights": ["Three-year starter, two-year captain, two-time all-conference selection"]
+    }
   ]
 }
 ```
 
-Each entry requires `school`, `location`, and `degree`; `detail` (e.g. GPA) is optional.
+Each `education` entry requires `school`, `location`, and `degree`; `detail` (e.g. GPA) is optional. Each `athletics` entry requires `team`, `location`, `league`, `years` (a display string, not a parsed date), and `highlights`.
 
 ### 5.5 Repo Structure
 

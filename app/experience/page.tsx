@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function ExperiencePage() {
   const experience = await getAllExperience();
-  const { education } = getSiteConfig();
+  const { education, athletics } = getSiteConfig();
 
   return (
     <div className="space-y-10">
@@ -52,6 +52,39 @@ export default async function ExperiencePage() {
                 {school.detail ? (
                   <p className="mt-4 text-xs text-ink/50">{school.detail}</p>
                 ) : null}
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {athletics.length > 0 ? (
+        <section className="space-y-6">
+          <h2 className="font-display text-2xl text-ink">Athletics</h2>
+          <p className="max-w-2xl text-sm text-ink/70">
+            Competitive soccer career spanning NCAA Division I and III, USL League Two,
+            and the US Open Cup.
+          </p>
+          <div className="space-y-6">
+            {athletics.map((stint) => (
+              <div
+                key={`${stint.team}-${stint.years}`}
+                className="rounded-2xl border border-ink/10 bg-white/70 p-6 shadow-sm"
+              >
+                <div className="flex flex-col gap-1 md:flex-row md:items-start md:justify-between">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/50">
+                      {stint.league} · {stint.location}
+                    </p>
+                    <h3 className="text-xl font-semibold text-ink">{stint.team}</h3>
+                  </div>
+                  <p className="text-sm text-ink/60">{stint.years}</p>
+                </div>
+                <ul className="mt-4 space-y-2 text-sm text-ink/70">
+                  {stint.highlights.map((highlight) => (
+                    <li key={highlight}>• {highlight}</li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
