@@ -31,8 +31,11 @@ export default function ProjectExplorer({ projects }: ProjectExplorerProps) {
     const needle = query.trim().toLowerCase();
 
     return projects.filter((project) => {
-      // Every selected tag must be present (multi-select AND).
-      const matchesTags = activeTags.every((tag) => project.tags.includes(tag));
+      // A project matches if it carries any selected tag (multi-select OR) —
+      // friendlier than AND at this catalog size, where AND often matches nothing.
+      const matchesTags =
+        activeTags.length === 0 ||
+        activeTags.some((tag) => project.tags.includes(tag));
 
       if (!needle) {
         return matchesTags;
@@ -103,7 +106,10 @@ export default function ProjectExplorer({ projects }: ProjectExplorerProps) {
         ) : null}
       </div>
 
-      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/50">
+      <p
+        aria-live="polite"
+        className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/50"
+      >
         {filtered.length} {filtered.length === 1 ? "project" : "projects"}
       </p>
 
