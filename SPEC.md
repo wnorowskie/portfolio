@@ -253,6 +253,7 @@ Global site config loaded via `getSiteConfig()` (typed by `SiteConfig` in `lib/s
 
 ```json
 {
+  "url": "https://eric-wnorowski-portfolio.vercel.app",
   "education": [
     {
       "school": "College of Charleston",

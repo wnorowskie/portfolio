@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     template: "%s · Eric Wnorowski",
   },
   description: site.summary,
+  alternates: {
+    canonical: "./",
+  },
   openGraph: {
     siteName: site.name,
     type: "website",
