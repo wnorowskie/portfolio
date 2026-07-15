@@ -42,5 +42,45 @@
       "degree": "Bachelor of Arts, Computer Science; Economics Minor",
       "detail": "GPA 3.7"
     }
+  ],
+  "athletics": [
+    {
+      "team": "SCU Heat",
+      "location": "Columbia, SC",
+      "league": "US Open Cup & UPSL",
+      "years": "2024",
+      "highlights": [
+        "Part of the US Open Cup squad that beat Charlotte FC II (MLS Next Pro) and tied Charlotte Independence (USL League One)"
+      ]
+    },
+    {
+      "team": "College of Charleston",
+      "location": "Charleston, SC",
+      "league": "NCAA Division I",
+      "years": "2023",
+      "highlights": [
+        "Graduate transfer for Fall 2023 — started 9 games and helped the team to its first conference road win in three years"
+      ]
+    },
+    {
+      "team": "Real Central NJ",
+      "location": "Princeton, NJ",
+      "league": "USL League Two",
+      "years": "2022 – 2023",
+      "highlights": [
+        "USL2 Top 50 Prospects and Team of the Month selections",
+        "Started 20+ games over two seasons, leading the team to the two best division finishes in club history"
+      ]
+    },
+    {
+      "team": "Vassar College",
+      "location": "Poughkeepsie, NY",
+      "league": "NCAA Division III",
+      "years": "2019 – 2022",
+      "highlights": [
+        "Three-year starter, two-year captain, and two-time all-conference selection; 2022 NCAA Tournament appearance; nominated for the College's Outstanding Career Award",
+        "#1 career goals-against average in school history, #3 in career wins, #4 in career shutouts, #6 in save percentage, #9 in saves — all in only three seasons"
+      ]
+    }
   ]
 }

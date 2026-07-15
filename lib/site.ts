@@ -21,6 +21,14 @@ export type SiteEducation = {
   detail?: string;
 };
 
+export type SiteAthletics = {
+  team: string;
+  location: string;
+  league: string;
+  years: string;
+  highlights: string[];
+};
+
 export type SiteConfig = {
   name: string;
   url: string;
@@ -33,6 +41,7 @@ export type SiteConfig = {
   keywords: string[];
   nav: SiteNavItem[];
   education: SiteEducation[];
+  athletics: SiteAthletics[];
 };
 
 const SITE_PATH = path.join(process.cwd(), "content", "site.json");
