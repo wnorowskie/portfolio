@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Fraunces, Sora } from "next/font/google";
 import SiteFooter from "@/components/site-footer";
@@ -54,6 +55,7 @@ export default function RootLayout({
           <main className="mx-auto w-full max-w-6xl px-6 py-12">{children}</main>
           <SiteFooter />
         </div>
+        <Analytics />
       </body>
     </html>
   );

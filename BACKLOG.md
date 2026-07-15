@@ -48,8 +48,11 @@ Ordered by priority.
 - [x] **Turn the Evidence sections into real links.** All three project MDX bodies list
   evidence as plain text ("GitHub Repo", "Pipeline diagram and repo link") instead of
   actual markdown links. Link them or render evidence from frontmatter.
-- [ ] **Fill in demo links or drop the placeholders.** All three projects have `demo: ""`.
-  Student Service Center was deployed on Vercel — if a live URL exists, add it.
+- [ ] **Add project walkthrough videos.** Decision (2026-07-15): instead of live demo
+  links, Eric will record walkthrough videos of the apps. Needs: recordings, a hosting
+  choice (YouTube unlisted vs. self-hosted in `public/`), and embedding on the project
+  detail pages (likely a `video` field in frontmatter + player on the deep-dive page).
+  Until then the "Demo coming soon" placeholders stay.
 - [ ] **Write the ATS text version of the resume.** [app/resume/page.tsx](app/resume/page.tsx#L47-L53)
   ships a visible "Placeholder for now while we align on content" box to visitors. Either
   add the plain-HTML resume content (SPEC §6.5) — the 2026 `.docx` is the content source —
@@ -58,13 +61,12 @@ Ordered by priority.
   [components/experience-card.tsx](components/experience-card.tsx#L42-L44) support it, and
   SPEC §6.4 calls for a visible confidentiality note, but none of the three
   `content/experience/*.mdx` files set it.
-- [ ] **Resolve the experience timeline gap.** The site shows the intern role ending
-  Aug 2022 and the associate role starting Apr 2024, with nothing in between. The 2026
-  resume drops dates entirely, so the site is now the only place presenting a timeline —
-  either add the missing role/period, let the Education section (grad school) explain the
-  gap, or de-emphasize dates the way the resume does.
-- [ ] **Verify the Soccer Data Pipeline repo URL.** `https://gitlab.com/data-pipeline5324322`
-  looks like a group URL rather than a project — confirm it resolves for a logged-out visitor.
+- [x] **Resolve the experience timeline gap.** Resolved (2026-07-15): the Aug 2022 →
+  Apr 2024 gap was senior year at Vassar plus the start of the Masters program — the
+  Education section on `/experience` now accounts for it, so no site change needed.
+- [x] **Verify the Soccer Data Pipeline repo URL.** Verified (2026-07-15):
+  `https://gitlab.com/data-pipeline5324322` returns 200 for a logged-out visitor
+  (public "Data Pipeline" GitLab group).
 
 ## P2 — SEO & metadata (SPEC §5.8, all currently missing)
 
@@ -102,5 +104,15 @@ Ordered by priority.
 - [ ] **Run an accessibility + Lighthouse pass** (targets: ≥95 across the board, SPEC §2.3)
   once content is in — check heading order, tag-filter keyboard support, alt text on
   project images (currently generic "screenshot" alt).
-- [ ] **Optional: privacy-friendly analytics** (SPEC §5.9) to measure email/LinkedIn clicks.
-- [ ] **Verify Vercel production deployment** with HTTPS (SPEC §11 definition of done).
+- [x] **Privacy-friendly analytics** (SPEC §5.9): Vercel Analytics added
+  (`@vercel/analytics`, `<Analytics />` in the root layout). One manual step: enable
+  Analytics for the project in the Vercel dashboard (project → Analytics tab → Enable);
+  that same tab is where the numbers are read.
+- [x] **Verify Vercel production deployment** with HTTPS: live at
+  `https://eric-wnorowski-portfolio.vercel.app` (confirmed 2026-07-15). Decision: staying
+  on the `.vercel.app` domain — the resume's `eric-wnorowski-portfolio.app` link should be
+  updated to match, since that domain is unattached and does not resolve.
+- [ ] **Decide whether to feature the athletic career.** Eric played NCAA men's soccer
+  (Vassar, then College of Charleston during the Masters). Options if yes: a `detail`
+  line on the education entries, a short "Beyond code" home-page line, and/or a sentence
+  in the Soccer Data Pipeline writeup connecting the project to playing experience.
