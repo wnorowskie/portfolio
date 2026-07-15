@@ -68,16 +68,18 @@ Ordered by priority.
 
 ## P2 — SEO & metadata (SPEC §5.8, all currently missing)
 
-- [ ] **Add the production URL + `metadataBase`.** The 2026 resume header names the domain:
+- [x] **Add the production URL + `metadataBase`.** The 2026 resume header names the domain:
   `eric-wnorowski-portfolio.app`. Add it as a `url` field in `site.json` and wire it into
-  `metadataBase` — needed for canonicals, OG tags, and the sitemap. (Verify the exact
-  domain/scheme resolves before wiring it in.)
-- [ ] **Add `sitemap.ts` and `robots.ts`** in `app/` (generate project slugs from
+  `metadataBase` — needed for canonicals, OG tags, and the sitemap. (Verified: the custom
+  domain does not resolve, so the canonical URL is
+  `https://eric-wnorowski-portfolio.vercel.app`; swap `site.json`'s `url` if the custom
+  domain is attached later.)
+- [x] **Add `sitemap.ts` and `robots.ts`** in `app/` (generate project slugs from
   `getAllProjectSlugs()`).
-- [ ] **Add Open Graph / Twitter card metadata** — site-wide defaults in
+- [x] **Add Open Graph / Twitter card metadata** — site-wide defaults in
   [app/layout.tsx](app/layout.tsx) plus per-project OG data in `generateMetadata`, and an
   OG image (static or `opengraph-image.tsx`).
-- [ ] **Add JSON-LD structured data.** Person schema on home, CreativeWork on project pages.
+- [x] **Add JSON-LD structured data.** Person schema on home, CreativeWork on project pages.
 
 ## P3 — Polish & hygiene
 

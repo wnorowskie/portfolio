@@ -23,6 +23,7 @@ export type SiteEducation = {
 
 export type SiteConfig = {
   name: string;
+  url: string;
   title: string;
   summary: string;
   location: string;
@@ -41,7 +42,7 @@ export function getSiteConfig(): SiteConfig {
   const raw = fs.readFileSync(SITE_PATH, "utf8");
   const parsed = JSON.parse(raw) as SiteConfig;
 
-  if (!parsed.name || !parsed.title || !parsed.email) {
+  if (!parsed.name || !parsed.url || !parsed.title || !parsed.email) {
     throw new Error("Site config is missing required fields.");
   }
 

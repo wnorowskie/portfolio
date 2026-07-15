@@ -249,7 +249,7 @@ confidentialityNote: "Details sanitized; architecture and tradeoffs described at
 
 #### Site config (`content/site.json`)
 
-Global site config loaded via `getSiteConfig()` (typed by `SiteConfig` in `lib/site.ts`). In addition to identity, links, keywords, and nav, it carries an `education` array rendered as a section at the bottom of `/experience`:
+Global site config loaded via `getSiteConfig()` (typed by `SiteConfig` in `lib/site.ts`). It carries a required `url` field — the canonical production origin (e.g. `"https://eric-wnorowski-portfolio.vercel.app"`, no trailing slash) — used for `metadataBase`, Open Graph URLs, the sitemap, robots.txt, and JSON-LD. In addition to identity, links, keywords, and nav, it also carries an `education` array rendered as a section at the bottom of `/experience`:
 
 ```json
 {

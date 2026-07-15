@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Sora } from "next/font/google";
 import SiteFooter from "@/components/site-footer";
 import SiteHeader from "@/components/site-header";
+import { getSiteConfig } from "@/lib/site";
 import "./globals.css";
 
 const bodyFont = Sora({
@@ -14,13 +15,26 @@ const displayFont = Fraunces({
   variable: "--font-fraunces",
 });
 
+const site = getSiteConfig();
+
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
     default: "Eric Wnorowski — Full-Stack / Backend / Search",
     template: "%s · Eric Wnorowski",
   },
-  description:
-    "Full-Stack Engineer with expertise in search, data pipelines, and web applications.",
+  description: site.summary,
+  openGraph: {
+    siteName: site.name,
+    type: "website",
+    title: "Eric Wnorowski — Full-Stack / Backend / Search",
+    description: site.summary,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Eric Wnorowski — Full-Stack / Backend / Search",
+    description: site.summary,
+  },
 };
 
 export default function RootLayout({

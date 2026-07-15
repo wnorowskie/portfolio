@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Tag from "@/components/tag";
 import { getAllProjectSlugs, getProjectBySlug } from "@/lib/content";
+import { getSiteConfig } from "@/lib/site";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -26,6 +27,19 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   return {
     title: project.frontmatter.title,
     description: project.frontmatter.hero.summary,
+    openGraph: {
+      type: "article",
+      url: `/projects/${slug}`,
+      title: project.frontmatter.title,
+      description: project.frontmatter.hero.summary,
+      images: "/opengraph-image",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.frontmatter.title,
+      description: project.frontmatter.hero.summary,
+      images: "/opengraph-image",
+    },
   };
 }
 
@@ -37,8 +51,27 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
 
+  const site = getSiteConfig();
+  const projectJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.frontmatter.title,
+    description: project.frontmatter.hero.summary,
+    url: `${site.url}/projects/${slug}`,
+    dateCreated: project.frontmatter.date,
+    author: {
+      "@type": "Person",
+      name: site.name,
+      url: site.url,
+    },
+  };
+
   return (
     <div className="space-y-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
+      />
       <section className="space-y-4">
         <Link className="text-sm font-semibold text-ink/60 hover:text-ink" href="/projects">
           ← Back to projects
