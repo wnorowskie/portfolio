@@ -28,7 +28,6 @@ export type SiteConfig = {
   summary: string;
   location: string;
   email: string;
-  phone: string;
   headshot: string;
   links: SiteLink;
   keywords: string[];

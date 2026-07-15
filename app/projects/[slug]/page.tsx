@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ExternalLink from "@/components/external-link";
 import Tag from "@/components/tag";
 import { getAllProjectSlugs, getProjectBySlug } from "@/lib/content";
 import { getSiteConfig } from "@/lib/site";
@@ -9,6 +10,14 @@ import { getSiteConfig } from "@/lib/site";
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
 };
+
+function imageAlt(title: string, src: string): string {
+  const filename = src.split("/").pop() ?? "";
+  const words = filename.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim();
+  const isGeneric = words === "" || /^(screenshot|image|img|photo)s?(\s?\d+)?$/i.test(words);
+
+  return isGeneric ? `${title} — architecture diagram / screenshot` : `${title} — ${words}`;
+}
 
 export async function generateStaticParams() {
   return getAllProjectSlugs().map((slug) => ({ slug }));
@@ -99,14 +108,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
         <div className="flex flex-wrap gap-3 text-sm font-semibold text-ink/70">
           {project.frontmatter.links.repo ? (
-            <Link className="hover:text-ink" href={project.frontmatter.links.repo}>
+            <ExternalLink className="hover:text-ink" href={project.frontmatter.links.repo}>
               Repository
-            </Link>
+            </ExternalLink>
           ) : null}
           {project.frontmatter.links.demo ? (
-            <Link className="hover:text-ink" href={project.frontmatter.links.demo}>
+            <ExternalLink className="hover:text-ink" href={project.frontmatter.links.demo}>
               Live demo
-            </Link>
+            </ExternalLink>
           ) : null}
         </div>
       </section>
@@ -117,7 +126,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <div key={image} className="overflow-hidden rounded-2xl border border-ink/10 bg-white/70">
               <Image
                 src={image}
-                alt={`${project.frontmatter.title} screenshot`}
+                alt={imageAlt(project.frontmatter.title, image)}
                 width={900}
                 height={600}
                 className="h-full w-full object-cover"
