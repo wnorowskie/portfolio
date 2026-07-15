@@ -10,6 +10,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const formattedDate = new Date(project.date).toLocaleString("en-US", {
     month: "short",
     year: "numeric",
+    timeZone: "UTC",
   });
   const detailHref = project.links.writeup || `/projects/${project.slug}`;
   const impactHighlights = project.hero.impactBullets.slice(0, 2);
