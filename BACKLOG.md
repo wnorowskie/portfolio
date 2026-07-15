@@ -43,8 +43,9 @@ Ordered by priority.
 - [x] **Add evidence images for Family Recipe App.** Done (2026-07-15): five screenshots
   (timeline, search, profile, add-recipe ×2) in `public/images/projects/family-recipe-app/`,
   wired into the project frontmatter.
-- [ ] **Add evidence images for Student Service Center.** Same issue: `images: []` and
-  "Screenshots and demo link coming soon."
+- [x] **Add evidence images for Student Service Center.** Done (2026-07-15): nine
+  screenshots (home, map, meals, meal plan, checkout, parking, tickets, ID profile, login)
+  in `public/images/projects/student-service-center/`, wired into the project frontmatter.
 - [x] **Turn the Evidence sections into real links.** All three project MDX bodies list
   evidence as plain text ("GitHub Repo", "Pipeline diagram and repo link") instead of
   actual markdown links. Link them or render evidence from frontmatter.
