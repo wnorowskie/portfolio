@@ -13,7 +13,7 @@ export default function ProjectsPage() {
   return (
     <div className="space-y-10">
       <div className="space-y-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-ink/65">
           Projects
         </p>
         <h1 className="font-display text-3xl text-ink md:text-4xl">Project archive</h1>

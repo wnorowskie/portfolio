@@ -16,7 +16,7 @@ export default function ExperienceCard({ entry }: ExperienceCardProps) {
     <div className="rounded-2xl border border-ink/10 bg-white/70 p-6 shadow-sm">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/50">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/65">
             {frontmatter.company} · {frontmatter.location}
           </p>
           <h3 className="text-xl font-semibold text-ink">{frontmatter.role}</h3>
@@ -24,7 +24,7 @@ export default function ExperienceCard({ entry }: ExperienceCardProps) {
             <p className="text-sm text-ink/70">{frontmatter.team}</p>
           ) : null}
         </div>
-        <p className="text-sm text-ink/60">
+        <p className="text-sm text-ink/70">
           {formatDate(frontmatter.start)} — {formatDate(frontmatter.end)}
         </p>
       </div>
@@ -42,7 +42,7 @@ export default function ExperienceCard({ entry }: ExperienceCardProps) {
       </div>
 
       {frontmatter.confidentialityNote ? (
-        <p className="mt-4 text-xs text-ink/50">{frontmatter.confidentialityNote}</p>
+        <p className="mt-4 text-xs text-ink/65">{frontmatter.confidentialityNote}</p>
       ) : null}
 
       <details className="mt-4">

@@ -40,9 +40,9 @@ Ordered by priority.
   SDLC, and an agentic workflow from JIRA ticket → code changes → docs → merge request →
   test plan. It's employer-adjacent, so write it sanitized per the confidentiality rules.
   Set `featured: false` to preserve the 3-featured cap.
-- [ ] **Add evidence images for Family Recipe App.** `images: []` and the Evidence section
-  says "Demo coming soon" — SPEC §6.3 requires at least one evidence item per deep dive.
-  Add screenshots under `public/images/projects/family-recipe-app/`.
+- [x] **Add evidence images for Family Recipe App.** Done (2026-07-15): five screenshots
+  (timeline, search, profile, add-recipe ×2) in `public/images/projects/family-recipe-app/`,
+  wired into the project frontmatter.
 - [ ] **Add evidence images for Student Service Center.** Same issue: `images: []` and
   "Screenshots and demo link coming soon."
 - [x] **Turn the Evidence sections into real links.** All three project MDX bodies list
@@ -53,10 +53,9 @@ Ordered by priority.
   choice (YouTube unlisted vs. self-hosted in `public/`), and embedding on the project
   detail pages (likely a `video` field in frontmatter + player on the deep-dive page).
   Until then the "Demo coming soon" placeholders stay.
-- [ ] **Write the ATS text version of the resume.** [app/resume/page.tsx](app/resume/page.tsx#L47-L53)
-  ships a visible "Placeholder for now while we align on content" box to visitors. Either
-  add the plain-HTML resume content (SPEC §6.5) — the 2026 `.docx` is the content source —
-  or remove the box until it's ready.
+- [x] **Write the ATS text version of the resume.** Done (2026-07-15): plain-HTML version
+  of the 2026 resume (experience, education, projects) replaces the placeholder box on
+  `/resume`.
 - [x] **Add `confidentialityNote` to the experience entries.** The schema and
   [components/experience-card.tsx](components/experience-card.tsx#L42-L44) support it, and
   SPEC §6.4 calls for a visible confidentiality note, but none of the three
@@ -101,9 +100,12 @@ Ordered by priority.
   `Eric Wnorowski Resume 2026.docx` out of git (gitignore it) once the PDF is moved into
   `public/resume/`.
 - [x] **Add a custom `not-found.tsx`** so bad project slugs get a branded 404.
-- [ ] **Run an accessibility + Lighthouse pass** (targets: ≥95 across the board, SPEC §2.3)
-  once content is in — check heading order, tag-filter keyboard support, alt text on
-  project images (currently generic "screenshot" alt).
+- [x] **Run an accessibility + Lighthouse pass** (targets: ≥95 across the board, SPEC §2.3).
+  Done (2026-07-15) against production (home, project detail, experience): Performance
+  96–100, Best Practices 100, SEO 100, Accessibility 95–96. Sole a11y failure was
+  color-contrast on low-opacity ink text (`text-ink/50` = 3.33:1, `text-ink/60` = 4.48:1
+  vs. the 4.5:1 requirement) — fixed by bumping `/50 → /65` and `/60 → /70` site-wide.
+  Heading order and tag-filter keyboard support passed; alt text was fixed in P3.
 - [x] **Privacy-friendly analytics** (SPEC §5.9): Vercel Analytics added
   (`@vercel/analytics`, `<Analytics />` in the root layout). One manual step: enable
   Analytics for the project in the Vercel dashboard (project → Analytics tab → Enable);

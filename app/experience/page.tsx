@@ -15,7 +15,7 @@ export default async function ExperiencePage() {
   return (
     <div className="space-y-10">
       <div className="space-y-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-ink/50">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-ink/65">
           Experience
         </p>
         <h1 className="font-display text-3xl text-ink md:text-4xl">Career highlights</h1>
@@ -47,10 +47,10 @@ export default async function ExperiencePage() {
                     <h3 className="text-xl font-semibold text-ink">{school.school}</h3>
                     <p className="text-sm text-ink/70">{school.degree}</p>
                   </div>
-                  <p className="text-sm text-ink/60">{school.location}</p>
+                  <p className="text-sm text-ink/70">{school.location}</p>
                 </div>
                 {school.detail ? (
-                  <p className="mt-4 text-xs text-ink/50">{school.detail}</p>
+                  <p className="mt-4 text-xs text-ink/65">{school.detail}</p>
                 ) : null}
               </div>
             ))}
@@ -73,12 +73,12 @@ export default async function ExperiencePage() {
               >
                 <div className="flex flex-col gap-1 md:flex-row md:items-start md:justify-between">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/50">
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/65">
                       {stint.league} · {stint.location}
                     </p>
                     <h3 className="text-xl font-semibold text-ink">{stint.team}</h3>
                   </div>
-                  <p className="text-sm text-ink/60">{stint.years}</p>
+                  <p className="text-sm text-ink/70">{stint.years}</p>
                 </div>
                 <ul className="mt-4 space-y-2 text-sm text-ink/70">
                   {stint.highlights.map((highlight) => (

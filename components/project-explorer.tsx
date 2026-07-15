@@ -69,7 +69,7 @@ export default function ProjectExplorer({ projects }: ProjectExplorerProps) {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search projects by name, stack, or keyword"
-            className="w-full max-w-md rounded-full border border-ink/15 bg-white/70 px-5 py-3 text-sm text-ink placeholder:text-ink/40 shadow-sm transition focus:border-ink/40 focus:outline-none"
+            className="w-full max-w-md rounded-full border border-ink/15 bg-white/70 px-5 py-3 text-sm text-ink placeholder:text-ink/65 shadow-sm transition focus:border-ink/40 focus:outline-none"
           />
         </div>
 
@@ -97,7 +97,7 @@ export default function ProjectExplorer({ projects }: ProjectExplorerProps) {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="rounded-full px-3 py-1 text-xs font-medium uppercase tracking-wide text-ink/50 underline-offset-4 transition hover:text-ink hover:underline"
+                className="rounded-full px-3 py-1 text-xs font-medium uppercase tracking-wide text-ink/65 underline-offset-4 transition hover:text-ink hover:underline"
               >
                 Clear
               </button>
@@ -108,7 +108,7 @@ export default function ProjectExplorer({ projects }: ProjectExplorerProps) {
 
       <p
         aria-live="polite"
-        className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/50"
+        className="text-xs font-semibold uppercase tracking-[0.24em] text-ink/65"
       >
         {filtered.length} {filtered.length === 1 ? "project" : "projects"}
       </p>
@@ -120,7 +120,7 @@ export default function ProjectExplorer({ projects }: ProjectExplorerProps) {
           ))}
         </div>
       ) : (
-        <div className="rounded-3xl border border-ink/10 bg-white/70 p-10 text-center text-sm text-ink/60">
+        <div className="rounded-3xl border border-ink/10 bg-white/70 p-10 text-center text-sm text-ink/70">
           No projects match those filters.
         </div>
       )}
