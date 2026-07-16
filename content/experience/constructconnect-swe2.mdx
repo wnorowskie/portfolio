@@ -17,9 +17,10 @@ tags:
   - Terraform
   - GitLab
 highlights:
-  - "Built a high-performance C#/.NET Elasticsearch API delivering faster, richer data capabilities for 75,000+ customers"
-  - "Developed Python/C#/Logstash ingestion pipelines enforcing schema consistency, deduplication, parent-child relationships, and real-time indexing"
-  - "Owned DevOps for Cloud Run services, Elastic deployments, and monitoring via Terraform and GitLab — tightening reliability, performance, and security"
+  - "Cut worst-case p99 search latency from ~9.4s to ~1.4s — and p95 to ~250ms under steady load — on the flagship search API's cross-search rollout, validated with 220k-request load campaigns at up to 8× production peak with zero 5xx errors"
+  - "Own event-driven ingestion pipelines (C#, Python, Logstash) that keep a 360k+ project search corpus fresh on 30-minute delta cycles across seven pipelines, serving 75,000+ customers"
+  - "Operate a multi-tier (hot/warm/cold) production Elasticsearch deployment spanning ~7TB, shipping production changes multiple times per month behind security scans and rollback plans"
+  - "Quantified relevance-vs-latency tradeoffs (hybrid RRF ranking, proximity search) with load tests before shipping — and drove infra cost controls: scale-to-zero non-prod services, storage lifecycle policies, cluster right-sizing"
 confidentialityNote: "Details sanitized; architecture and tradeoffs described at a high level."
 ---
 

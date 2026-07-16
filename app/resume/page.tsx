@@ -84,8 +84,9 @@ export default function ResumePage() {
             <ul className="mt-1 list-disc space-y-1 pl-5">
               <li>
                 Develop a modern React/Next.js (TypeScript) frontend application and Python
-                backend apps for a modernized document viewer, improving performance so 1000+
-                page documents load in under one second.
+                backend apps for a modernized document viewer — reducing per-page render times
+                roughly 5–10× on documents up to 1,100 pages and cutting the core backend API
+                p95 latency by 64%.
               </li>
               <li>
                 Partner with Quality Engineering to build Python automation, end-to-end, and
