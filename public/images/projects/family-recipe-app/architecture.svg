@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="660" viewBox="0 0 1160 660" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#477a8a"/>
+    </marker>
+  </defs>
+
+  <rect width="1160" height="660" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="40" y="44" font-size="20" font-weight="bold" fill="#020f19">Family Recipe App</text>
+  <text x="40" y="66" font-size="13" fill="#5c6b74">Production-grade full stack on Google Cloud — Terraform-managed, CI/CD-gated</text>
+
+  <!-- Browser -->
+  <rect x="40" y="150" width="150" height="64" rx="4" fill="#e4f1f5" stroke="#477a8a" stroke-width="1.5"/>
+  <text x="115" y="177" font-size="14" font-weight="bold" fill="#0d1c27" text-anchor="middle">Family members</text>
+  <text x="115" y="196" font-size="12" fill="#5c6b74" text-anchor="middle">mobile / desktop</text>
+
+  <!-- GCP container -->
+  <rect x="260" y="100" width="860" height="300" rx="6" fill="none" stroke="#9db6c0" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <text x="278" y="126" font-size="12" font-weight="bold" fill="#5c6b74" letter-spacing="1">GOOGLE CLOUD</text>
+
+  <!-- Next.js frontend -->
+  <rect x="300" y="150" width="190" height="64" rx="4" fill="#ffffff" stroke="#477a8a" stroke-width="1.5"/>
+  <text x="395" y="177" font-size="14" font-weight="bold" fill="#0d1c27" text-anchor="middle">Next.js app</text>
+  <text x="395" y="196" font-size="12" fill="#5c6b74" text-anchor="middle">Cloud Run · UI + auth</text>
+
+  <!-- Python API -->
+  <rect x="580" y="150" width="180" height="64" rx="4" fill="#ffffff" stroke="#477a8a" stroke-width="1.5"/>
+  <text x="670" y="177" font-size="14" font-weight="bold" fill="#0d1c27" text-anchor="middle">Python API</text>
+  <text x="670" y="196" font-size="12" fill="#5c6b74" text-anchor="middle">Cloud Run · data access</text>
+
+  <!-- Cloud SQL -->
+  <path d="M 850 162 a 90 12 0 0 0 180 0 v 44 a 90 12 0 0 1 -180 0 z" fill="#ffffff" stroke="#477a8a" stroke-width="1.5"/>
+  <ellipse cx="940" cy="162" rx="90" ry="12" fill="#e4f1f5" stroke="#477a8a" stroke-width="1.5"/>
+  <text x="940" y="190" font-size="14" font-weight="bold" fill="#0d1c27" text-anchor="middle">Cloud SQL</text>
+  <text x="940" y="208" font-size="12" fill="#5c6b74" text-anchor="middle">Postgres</text>
+
+  <!-- GCS uploads -->
+  <path d="M 580 302 a 90 12 0 0 0 180 0 v 44 a 90 12 0 0 1 -180 0 z" fill="#ffffff" stroke="#477a8a" stroke-width="1.5"/>
+  <ellipse cx="670" cy="302" rx="90" ry="12" fill="#e4f1f5" stroke="#477a8a" stroke-width="1.5"/>
+  <text x="670" y="330" font-size="14" font-weight="bold" fill="#0d1c27" text-anchor="middle">Cloud Storage</text>
+  <text x="670" y="348" font-size="12" fill="#5c6b74" text-anchor="middle">recipe photo uploads</text>
+
+  <!-- Python microservices -->
+  <rect x="850" y="290" width="180" height="64" rx="4" fill="#ffffff" stroke="#477a8a" stroke-width="1.5"/>
+  <text x="940" y="317" font-size="14" font-weight="bold" fill="#0d1c27" text-anchor="middle">Python microservices</text>
+  <text x="940" y="336" font-size="12" fill="#5c6b74" text-anchor="middle">task-specific jobs</text>
+
+  <!-- Monitoring -->
+  <rect x="300" y="290" width="190" height="64" rx="4" fill="#e4f1f5" stroke="#477a8a" stroke-width="1.5"/>
+  <text x="395" y="317" font-size="14" font-weight="bold" fill="#0d1c27" text-anchor="middle">Cloud Monitoring</text>
+  <text x="395" y="336" font-size="12" fill="#5c6b74" text-anchor="middle">dashboards · alerts · health</text>
+
+  <!-- Arrows -->
+  <line x1="190" y1="182" x2="293" y2="182" stroke="#477a8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="242" y="172" font-size="10" fill="#8a99a3" text-anchor="middle">HTTPS · JWT</text>
+  <line x1="490" y1="182" x2="573" y2="182" stroke="#477a8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="531" y="172" font-size="10" fill="#8a99a3" text-anchor="middle">REST</text>
+  <line x1="760" y1="182" x2="843" y2="182" stroke="#477a8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="670" y1="214" x2="670" y2="283" stroke="#477a8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="723" y="252" font-size="10" fill="#8a99a3" text-anchor="middle">image upload / serve</text>
+  <line x1="940" y1="290" x2="940" y2="225" stroke="#477a8a" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="850" y1="322" x2="767" y2="322" stroke="#477a8a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+  <line x1="395" y1="290" x2="395" y2="221" stroke="#477a8a" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+
+  <!-- CI/CD band -->
+  <rect x="40" y="450" width="1080" height="110" rx="4" fill="none" stroke="#477a8a" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <text x="58" y="478" font-size="12" font-weight="bold" fill="#5c6b74" letter-spacing="1">CI/CD — GITHUB ACTIONS</text>
+
+  <rect x="70" y="492" width="130" height="50" rx="4" fill="#e4f1f5" stroke="#477a8a" stroke-width="1.3"/>
+  <text x="135" y="514" font-size="13" font-weight="bold" fill="#0d1c27" text-anchor="middle">Push / PR</text>
+  <text x="135" y="531" font-size="11" fill="#5c6b74" text-anchor="middle">GitHub repo</text>
+
+  <rect x="260" y="492" width="200" height="50" rx="4" fill="#ffffff" stroke="#477a8a" stroke-width="1.3"/>
+  <text x="360" y="514" font-size="13" font-weight="bold" fill="#0d1c27" text-anchor="middle">Quality gates</text>
+  <text x="360" y="531" font-size="11" fill="#5c6b74" text-anchor="middle">security scans · unit · e2e tests</text>
+
+  <rect x="520" y="492" width="170" height="50" rx="4" fill="#ffffff" stroke="#477a8a" stroke-width="1.3"/>
+  <text x="605" y="514" font-size="13" font-weight="bold" fill="#0d1c27" text-anchor="middle">Build image</text>
+  <text x="605" y="531" font-size="11" fill="#5c6b74" text-anchor="middle">Artifact Registry</text>
+
+  <rect x="750" y="492" width="170" height="50" rx="4" fill="#ffffff" stroke="#477a8a" stroke-width="1.3"/>
+  <text x="835" y="514" font-size="13" font-weight="bold" fill="#0d1c27" text-anchor="middle">Deploy</text>
+  <text x="835" y="531" font-size="11" fill="#5c6b74" text-anchor="middle">Cloud Run services</text>
+
+  <line x1="200" y1="517" x2="253" y2="517" stroke="#477a8a" stroke-width="1.3" marker-end="url(#arrow)"/>
+  <line x1="460" y1="517" x2="513" y2="517" stroke="#477a8a" stroke-width="1.3" marker-end="url(#arrow)"/>
+  <line x1="690" y1="517" x2="743" y2="517" stroke="#477a8a" stroke-width="1.3" marker-end="url(#arrow)"/>
+
+  <!-- Footer -->
+  <text x="40" y="610" font-size="11.5" fill="#8a99a3">All infrastructure provisioned with Terraform — Cloud Run, Cloud SQL, Cloud Storage, Artifact Registry, Monitoring, IAM.</text>
+</svg>
