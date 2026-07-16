@@ -347,6 +347,7 @@ Use a small loader in `lib/content.ts` to:
 
 - Hero (title, short summary)
 - Featured projects (3 cards)
+- Engineering deep dives teaser (compact cards linking to `category: Deep Dive` project entries; section hides itself if none exist)
 - Strengths (bullets + tech chips)
 - Footer (links)
 
