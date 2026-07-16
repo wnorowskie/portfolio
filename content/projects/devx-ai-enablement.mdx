@@ -15,56 +15,65 @@ links:
   demo: ""
   writeup: "/projects/devx-ai-enablement"
 hero:
-  summary: "Agentic developer tooling — Claude Code agents, skills, and hooks that assist across the software development lifecycle."
+  summary: "Agentic developer tooling — Claude Code agents, skills, and guardrail hooks that carry a ticket from plan to merge request, with a human gate at every phase."
   impactBullets:
-    - "Built AI agents, skills, and hooks spanning the full SDLC"
-    - "Designed an agentic workflow from ticket pickup to merge request and test plan"
-images: []
+    - "Marketplace of 30+ shared skills, core agents, and guardrail hooks adopted across the engineering org"
+    - "~3 in 4 product engineers weekly-active on the AI tooling; most report saving 3+ hours per week"
+images:
+  - "/images/projects/devx-ai-enablement/architecture.png"
 ---
 
 # Summary
 
-DevX AI Enablement is internal developer-experience work focused on making AI a dependable teammate across the software development lifecycle. As part of an AI Center of Excellence, I build and design Claude Code agents, skills, and hooks that help engineers move from a tracked issue to reviewed, documented, tested changes with less manual overhead.
+DevX AI Enablement is internal developer-experience work focused on making AI a dependable teammate across the software development lifecycle. As part of an AI Center of Excellence, I build and design Claude Code agents, skills, and hooks — distributed through an internal marketplace of 30+ shared skills — that help engineers move from a tracked issue to reviewed, documented, tested changes with less manual overhead.
 
 ## Problem / Motivation
 
-Engineers spend a large share of their time on repetitive, context-heavy steps: reading a ticket, orienting in the codebase, wiring up changes, updating docs, opening a merge request, and drafting a test plan. The goal was to encode that path as reusable AI tooling so the routine parts are assisted or automated, and engineers keep their attention on design and judgment.
+Engineers spend a large share of their time on repetitive, context-heavy steps: reading a ticket, orienting in the codebase, wiring up changes, updating docs, opening a merge request, and drafting a test plan. The goal was to encode that path as reusable AI tooling so the routine parts are assisted or automated — without ever letting automation outrun trust.
 
 ## Architecture
 
-- **Agents** — task-scoped assistants that carry a job (e.g. implement a change, draft a review) end to end.
-- **Skills** — reusable, composable capabilities agents invoke for specific steps in the lifecycle.
-- **Hooks** — deterministic automation triggered around agent and tool actions to enforce conventions and guardrails.
+The flagship workflow is an **orchestrator skill coordinating three sub-agents**, each owning one phase:
+
+- **planning-agent** — analyzes the ticket and explores the repo read-only, then writes a structured implementation plan (files to touch, steps, test strategy, branch/commit conventions derived from the repo's own docs).
+- **implementation-agent** — implements the approved plan on a feature branch, runs the project's tests and linters, and commits only after the developer approves a summarized change report.
+- **qa-agent** — runs the full suite with coverage thresholds (≥85% overall, ≥90% on new code), walks each acceptance criterion with explicit code-and-test evidence, and performs a structured security review.
+
+The orchestrator manages ticket lifecycle transitions, validates each phase's artifacts itself — the plan file exists and is well-formed, the branch and commit are real, the tests actually pass — and requires **explicit human approval at every gate** before proceeding. The output is a merge request labeled as AI-assisted, reviewed and merged by humans like any other change.
 
 ## Key Technical Decisions + Tradeoffs
 
-- **Composable skills over monolithic prompts** — small, reusable capabilities are easier to test and combine, at the cost of more upfront design.
-- **Hooks for guardrails** — deterministic checks around agent actions keep automation predictable, trading some flexibility for reliability.
-- **Human-in-the-loop by default** — the workflow proposes changes and review artifacts rather than merging autonomously, prioritizing trust over full automation.
+- **Human-in-the-loop at every phase, not just the end** — plan, commit, and QA each need explicit sign-off. Slower than full autonomy, but it keeps the developer the author of the change rather than its spectator.
+- **Trust but verify — in code, not prompts.** The orchestrator re-runs tests and checks git state itself instead of trusting agents' completion claims. Agent output is treated as a hypothesis until validated.
+- **Deterministic hooks over prompt-based guardrails** — pre/post-tool hooks block destructive commands and sensitive-file reads, validate writes, and audit every action. Unlike prompt instructions, hooks can't be talked out of their job.
+- **Composable skills over monolithic prompts** — small, reusable capabilities with declared tool allowlists are easier to test, audit, and combine, at the cost of more upfront design.
 
 ## Reliability / Performance / Security
 
-- Guardrails and review steps keep generated changes auditable before they land.
-- Automation is scoped and reviewable rather than fully autonomous.
+- Integrations inherit each underlying system's RBAC through MCP — agents never have more access than the developer running them.
+- Per-skill tool allowlists constrain what each skill can touch; secret scanning is a hard stop that halts all other work.
+- OpenTelemetry traces every session — usage, acceptance, and cost metrics flow into org dashboards, so adoption and behavior are observable rather than anecdotal.
 
 ## Results / Impact
 
-- Reusable agents, skills, and hooks that assist engineers across the SDLC.
-- A repeatable agentic path from ticket to merge request, reducing manual overhead on routine steps.
+- Roughly **3 in 4 product engineers weekly-active** on the tooling, with about half qualifying as power users; adoption spans nearly every squad.
+- Tens of thousands of agent sessions with a **~98% suggestion-acceptance rate** over a trailing 30-day window.
+- In org-wide surveys, a majority of engineers report saving **3+ hours per week**; over a third report 5+.
+- A repeatable ticket-to-MR path that turns one-off prompting into shared, governed infrastructure.
 
-## What I’d Improve Next
+## How Agent Output Quality Is Evaluated
 
-- Broaden skill coverage across more lifecycle steps.
-- Tighten feedback loops so agents learn from review outcomes.
+- **Automatic:** guardrail hooks on every tool call; CI enforcing test metadata and a regression rule (every bug fix ships a failing-before test); structured change-summary rubrics per phase.
+- **Human:** mandatory MR review with structured narratives that direct reviewer attention; plan-level review gates before any code is written; feedback skills that encode lessons from bad runs back into agent docs.
+- **Longitudinal:** per-agent health scorecards in design — MR rejection rate, CI failure rate, human-override frequency, coverage deltas — reviewed on a regular cadence.
+
+## What I'd Improve Next
+
+- Consolidate ticket-to-MR cycle-time metrics into a canonical before/after dashboard.
+- Graduate agent health scorecards and CI quality gates from pilot to universally enforced.
 
 ## Evidence
 
-An end-to-end agentic workflow guides an agent through the development lifecycle:
+- Workflow diagram (above) — the agentic path from ticket to merge request with its human gates and guardrail layers.
 
-1. **Pick up a ticket** — read the tracked issue and gather context from the codebase.
-2. **Make the code changes** — implement the change against the issue's acceptance criteria.
-3. **Update documentation** — keep docs in sync with the change.
-4. **Open a merge request** — assemble the change for review.
-5. **Draft a test plan** — outline how the change is validated before release.
-
-_No public repository — this is internal developer-experience work, described here at a high level._
+_No public repository — this is internal developer-experience work, described here at a high level with employer specifics removed._

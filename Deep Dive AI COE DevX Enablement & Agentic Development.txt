@@ -1,0 +1,163 @@
+Deep Dive: AI COE DevX Enablement & Agentic Development
+
+ConstructConnect’s AI COE DevX enablement is a coordinated program that standardizes an AI-first development stack (DevX 2.0), operationalizes agentic ticket-to-MR workflows, and wraps them with strong governance and observability.
+Key takeaways:
+Platform shape – The DevX stack is built around the CoCo AI Marketplace and the coco-ai-core plugin, which provide 30+ shared skills, 3 core agents, and a guardrail hook system for agentic workflows from Jira ticket→plan→code→tests→MR→feedback.   
+Main workflow – The flagship /agentic-development-workflow skill orchestrates three sub-agents (planning-agent, implementation-agent, qa-agent) to drive a Jira issue through Planning → Implementation → QA → MR → Feedback, enforcing Jira status transitions, validating artifacts (like implementation-plan.md), and requiring explicit human approval at each major gate.   
+Security & governance – Guardrails exist at multiple layers: – Underlying systems’ RBAC (Jira, GitLab, BigQuery, Glean, etc.) via MCP; – Marketplace-level allowed-tools and per-skill RBAC (via ai-config-scanner); – PreToolUse/PostToolUse hooks that block dangerous commands and sensitive file access and audit all writes; – A formal AI Approved Tool Registry, AI Governance and Acceptable Use policies, and a centralized OTEL telemetry pipeline into BigQuery, Prometheus, and Cloud Logging.   
+Adoption & impact – As of early/mid-2026: – PD engineering: 131 of 171 engineers (76.6%) were weekly active on Claude Code/Cursor pre-Wave-1, with 87 (50.9%) “power users” (≥5 sessions/week) and 27 of 29 squads (93%) with ≥2 active users.   – Org-wide Claude Code: 398 unique users seen, 392 active in a trailing 30-day window, 37,855 sessions, 7.26M lines of code added, 10,708 commits, and a 98.1% acceptance rate in that same 30-day period.  – Time saved (survey): 63% of employees report saving ≥3 hours/week with AI; 38% report saving >5 hours/week.  
+Quality evaluation – Quality is evaluated via multi-layered checks: – Automatic guardrail hooks and security sweeps (security-sweep, ai-security-review, adversarial-review plugin); – CI and pytest-coco enforcing test metadata, regression rules, and strict markers; – Structured change-summary rubrics in ticket-to-MR workflows; – Higher-level systems like CoCo Sentinel, Count-Anything experiment harness, and Glean’s golden tests + agent insights; – Persistent human review at MR, ticket/plan, and content stages.   
+Gaps & direction – The metrics and governance stack is strong, but still maturing: cost attribution is being stabilized, tickets-to-MR metrics are instrumented but not yet summarized in a canonical dashboard, and some advanced designs (Agent Health Scorecards, full CoCo Sentinel CI gates, an AI Gateway) are in design/pilot rather than universally enforced.
+  	•	/agentic-development-workflow – Skill (orchestrator) Orchestrates the complete development workflow from Jira ticket → plan → implementation → QA → MR → feedback, coordinating sub-agents rather than writing code itself. It enforces Jira lifecycle transitions (Ready → In Progress → Testing), validates that implementation-plan.md exists and is well-formed, checks that branches/commits/tests actually exist and pass, calls /create-merge-request, and optionally /collect-feedback to capture developer feedback.   
+planning-agent – Agent Analyzes a Jira ticket and the target repo to produce a detailed implementation plan written to implementation-plan.md: files to touch, architecture notes, step-by-step tasks, and testing strategy. It must complete a strict checklist (requirements analysis, codebase scan, branch/commit conventions) and uses Atlassian MCP (primary) and Glean MCP (fallback) to bring in standards and docs.   
+implementation-agent – Agent Implements code based on the approved plan: creates a branch (following naming conventions from AGENTS.md), edits code, runs language-appropriate tests and linters, and commits a single, well-formed commit only after the user explicitly approves a summarized change report. It enforces security and style standards per language and emits structured completion markers (branch name, #files, tests passing, commit hash).   
+qa-agent – Agent Validates that the implementation meets all requirements: discovers and runs the project’s test suite, enforces coverage thresholds (≥85% overall, ≥90% on new code), walks each acceptance criterion with explicit code+test evidence, and performs a structured security review (no injections, no hardcoded secrets, input validation, safe logging, secure defaults). It must output explicit markers for tests, build, AC verification, and security before the workflow can proceed.   
+
+  2.2.5 Guardrail & lifecycle hooks
+Hooks are defined in hooks.json under coco-ai-core and executed by Claude Code per the Jeff Seibert lifecycle spec.
+Guardrail hooks – PreToolUse / PostToolUse / Failure – block-dangerous.mjs: Blocks catastrophic shell commands (Bash|Shell|PowerShell) – destructive filesystem ops, force pushes, piped remote scripts, destructive SQL, database file manipulation. – block-reads.mjs: Blocks sensitive reads (e.g., .env, secrets) from Read|Bash|PowerShell. – validate-write.mjs: Validates writes from Write|Edit|StrReplace|PowerShell against security rules, blocking suspicious writes. – audit.mjs: Audits all writes and key tool calls in PostToolUse and PostToolUseFailure.   
+Lifecycle hooks – Session & subagent lifecycle – session-lifecycle, session-changelog, rotate-logs, subagent-lifecycle, on-config-change, on-user-prompt, on-task-completed, pre-compact manage logging, changelogs, config changes, task completion, and compaction behavior. They provide a uniform way to observe what happens across sessions and sub-agents. 
+  2.3 How the Main Agentic Development Workflow Works
+The canonical agentic development workflow is implemented by /agentic-development-workflow and its sub-agents. Conceptually, it is:
+Jira ticket → Ticket/plan review and analysis → Plan (implementation-plan.md) → Implementation (branch, code, tests, commit) → QA (tests, ACs, security) → Merge Request → Developer feedback.
+
+
+2.3.1 Stages & agents
+Intent capture (Jira ticket) Human PM / dev creates a Jira ticket with description + ACs; often later refined by /ticket-analysis or DPP review skills before agentic work begins.   
+Workflow invocation & initialization Developer runs /agentic-development-workflow [TICKET-ID] [repo-location] from Claude Code/Cursor/VS Code. The orchestrator:
+sets up a TodoWrite phase list (Planning, Implementation, QA, Create MR, Feedback),
+retrieves the Jira issue via Atlassian MCP,
+confirms repo path, and
+prepares to manage Jira lifecycle transitions. 
+Jira lifecycle coordination (cross-cutting) For each phase, the orchestrator:
+uses getTransitionsForJiraIssue to find the correct transition,
+transitions to Ready (Planning), In Progress (Implementation), Testing (QA), and verifies status via getJiraIssue before proceeding,
+surfaces mismatches and asks the developer to intervene if the workflow doesn’t match expected statuses (e.g., custom workflows). 
+Planning phase – planning-agent Goal: produce a high-quality implementation-plan.md that the engineer approves before any code is written. Agent responsibilities:
+Fetch and analyze the Jira ticket, derive requirements and ACs.
+Explore the codebase (read-only) to identify relevant files, directories, patterns, and test locations.
+Compute proposed branch naming and commit style from AGENTS.md, CONTRIBUTING.md, and git log.
+Write a structured plan (summary, steps, test strategy, branch+commit style) into implementation-plan.md. 
+Orchestrator validation:
+Check for completion markers (PHASE 1/2 COMPLETE) in output.
+Verify that implementation-plan.md exists, is non-empty, and contains required sections.
+Present a plan summary and require explicit developer approval before moving to Implementation. 
+Implementation phase – implementation-agent Goal: implement the approved plan safely and coherently on a feature branch. Agent responsibilities:
+Read implementation-plan.md to extract branch name, files, and steps.
+Create a branch per conventions, falling back to deriving name if needed.
+Edit/add code and tests according to the plan and coding standards for the language.
+Run tests (e.g., npm test, pytest, dotnet test), fix failures until all tests pass.
+Summarize changes (files, tests, coverage) and ask the user whether to commit.
+On approval, create a single commit with correct type, scope, and ticket ID, and output completion markers including branch and commit hash. 
+Orchestrator validation:
+Verify branch existence (git branch --list),
+Verify latest commit exists on that branch (git log -1),
+Confirm tests are passing,
+Track Implementation todo as complete only when those checks, markers, and human approval all succeed. 
+QA phase – qa-agent Goal: ensure requirements are met, tests/builds pass and meet coverage thresholds, and security hygiene is good. Agent responsibilities:
+Transition ticket to Testing and verify. 
+Detect project test commands and run the full suite; run coverage and enforce thresholds.
+For each AC, explicitly confirm how it is satisfied (referencing code and tests) with a pass/fail status.
+Run a security review: injection risks, secrets, input validation, logging, secure defaults.
+Output markers for Tests Validated, Build Validated, All ACs Verified, Security Review Complete, and a structured QA report. 
+Orchestrator validation:
+Re-run tests locally (don’t rely solely on QA text markers).
+Present QA summary to the user and require explicit approval before MR creation. 
+MR creation – /create-merge-request Goal: open a well-structured GitLab MR against trunk with correct metadata and Jira linkage. Orchestrator responsibilities:
+Call /create-merge-request with branch name (from plan) and trunk branch, passing Jira ticket context.
+Ensure branch is synced with trunk (merge trunk into branch) before MR creation. 
+Label MR ai-assisted and include Jira references in description. 
+Output:
+MR URL surfaced to the developer.
+Ticket remains in Testing; human reviewers and merge logic operate as usual.
+Feedback collection – /collect-feedback Goal: gather qualitative data on workflow usefulness. Orchestrator calls /collect-feedback [TICKET-ID] agentic-development-workflow; the skill either logs feedback to Confluence or records that feedback was declined/unavailable, then the orchestrator marks Feedback todo as complete.   
+Completion & human responsibilities Orchestrator’s final checklist:
+All phases have completion markers and validated artifacts.
+MR exists and link is provided.
+Ticket is in Testing and the user has been instructed to move it to Done after MR merge.
+Feedback phase is complete (even if declined). 
+Human responsibilities:
+Conduct MR review, request changes, and merge when satisfied.
+Transition ticket to Done upon successful deployment/merge.
+   2.4 Security and Governance Guardrails
+Security guardrails span data access, secrets, hooks, policies, and observability.
+2.4.1 Data access and RBAC
+MCP inherits system RBAC – Atlassian, GitLab, BigQuery, HubSpot, OKR MCPs all operate under the authenticated user’s account; access is limited to what the user can see in those systems (e.g., BigQuery MCP is read-only and only for approved users).   
+Per-skill RBAC via AI Config Scanner – ai-config-scanner writes an RBAC manifest mapping skills/agents to MCPs and access levels (read-only vs read/write). E.g., ticket-analysis is Atlassian+Glean read-only; create-merge-request is GitLab read/write; agentic-development-workflow is Atlassian+GitLab+Glean with constrained access.   
+Internal services and Entra groups – Services like the weekly-update-service and Langfuse Dev enforce authorization via Entra groups (ai-coe-admins, App – Langfuse – SSO – Dev – Admin/User) and per-profile or per-namespace access rules.   
+AI Governance & Acceptable Use policies – Policies explicitly restrict: – Using external AI tools on Internal/Protected data unless on the Approved Tool list, – Using personal accounts for AI tools, – Uploading PII or confidential data into non-approved AI services.   
+2.4.2 Secrets and credentials
+End-user guidance – AI tools FAQ and policies instruct developers never to paste API keys/passwords into AI chats; keys must be stored in Keeper and surfaced via env vars or local config. Any accidental exposure must be rotated and reported.   
+security-sweep skill – Automated secret scan that: – Scans code, configs, git history, and MCP configs, – Treats critical findings as a hard stop (no other work proceeds), – Redacts secrets and lists only fingerprints & rotation lists, – Supports modes for safe auto-fix and escalation to AI COE.   
+CI/CD secret handling – Tools like llm-client follow Cloudsmith best practices: – A single group-level masked secret CLOUDSMITH_API_KEY, – .netrc file created and removed during CI, – Docker builds must use BuildKit secret mounts (--mount=type=secret) instead of ARG/ENV to prevent leaks.   
+GCP infra secrets (Langfuse) – Secrets are stored only in Secret Manager, with initial DB/Redis passwords populated from managed resources, and sensitive app secrets added via gcloud secrets versions add from stdin—never in Terraform variables, outputs, GitLab variables, or files.   
+LLM client egress safeguards – mempalace.llm_client requires explicit keys (ANTHROPIC_API_KEY), classifies endpoints as local vs external (to warn on external egress), and tracks api_key_source so env-sourced keys can be treated cautiously.   
+2.4.3 Prompt & tool guardrails
+Allowed-tools in SKILL.md – Each skill’s allowed-tools restricts its tool surface (e.g., security-sweep can grep and run specific audit commands, but cannot arbitrarily modify files).   
+Organization-managed settings (planned) – Managed settings (already used for telemetry) will be extended to enforce allowManagedHooksOnly, disableBypassPermissionsMode, and signed hooks, making required guardrail hooks unbypassable and ensuring OTel logs all hook invocations.   
+AI Approved Tool Registry – Per-tool integration rules for MCPs and external tools specifying: – Allowed data classifications and purposes, – Hard rules (e.g., “never send email without per-tool confirmation,” “never include proprietary code in queries,” “treat all writes as auditable”), – Rapid Track-2 approval path for internal agents/MCPs.   
+2.4.4 Observability, logging, and cost control
+Claude Code telemetry (OTEL) – claude-code-metrics-collector pushes: – Metrics: claude_code.session.count, lines_of_code.count, pull_request.count, commit.count, cost.usage, token.usage. – Events: user_prompt, tool_result, api_request, api_error, tool_decision. to an OTEL Collector on Cloud Run, then to Prometheus, Trace, Cloud Logging, and BigQuery (ai_adoption_metrics.otel_collector_claude_code_telemetry).   
+AI Pulse & AI Adoption metrics – AI Pulse Cloud Run jobs ingest usage from Claude and Cursor APIs, plus config scans, into BigQuery tables (user_daily, team_daily, config_file_scans, etc.), driving dashboards and weekly exec reports.   
+Langfuse Dev – ai-dev CLI can mirror traces into Langfuse via a LangfuseObservabilityProvider. Egress is controlled by policy (metadata-only on Cloud), with fail-open behavior (Langfuse failures never block commands; they just degrade observability).   
+Cost monitoring – Claude usage and cost metrics exist in OTEL/BigQuery; an org-wide cap across Claude Code and Cursor is monitored, and DS-10473 reconciled HTML and dbt dashboards to understand May 2026 spend (~$169K, with gaps due to missing Cursor/Claude cost feeds).   
+2.4.5 Compliance & governance frameworks
+The SENG-417 ADR maps DevX/AI tooling features (Marketplace, managed settings, compliance validation, AI gateway, containerized exec) to Roper Cyber Maturity Controls and internal AWARE checklist items (e.g., AI usage logging, vendor risk assessments, dashboards).   
+The AWARE AI Governance Framework feature (NS-16994) sets acceptance criteria for policies, tool registry, vendor risk, AI usage logging, training, and dashboards; many components (policies, registry, telemetry) exist, but the full AWARE rollout is still in progress.   
+The Data Management Policy requires AI Impact Assessments and Data Privacy Impact Assessments for AI services, with InfoSec and Roper Legal involvement for third-party tools.   
+A CSIRT corrective action highlights the need for trigger-based re-assessment whenever Track-2 tool user bases or use cases expand (e.g., non-technical users via Claude Code to GitLab), to avoid silent population-shift risk.   
+
+2.5 Adoption and Impact
+2.5.1 Developer adoption
+Product Development (Wave 1) On the Wave-1 AI Adoption Dashboard (PD engineering):
+Weekly active engineers (WAEs): 131 of 171 (76.6%) using Claude Code or Cursor in the week of Mar 9 2026. 
+Daily active engineers: 58.3 distinct engineers/day on average over that week. 
+Power users (≥5 sessions/week): 87 of 171 (50.9%). 
+Squad breadth: 27 of 29 squads (93.1%) with ≥2 active engineers. 
+Org-wide Claude Code On the Claude Code Adoption & Usage report (usage window 2025-09-01 → 2026-04-28):
+398 users seen overall; 392 active in the trailing 30-day window.
+37,855 sessions, 7.26M lines of code added, 10,708 commits, 98.1% acceptance in that 30-day window. 
+Repo-level agentic readiness The April 14 2026 ai_config_audit.md lists 126 AGENTS.md files across the org, including AI Adoption, AI Pulse, AI Marketplace Webapp, coco-ai-cli, and many product repos, indicating broad readiness for agentic workflows.   
+2.5.2 Time saved and perceived impact
+Survey-measured time savings AI Pulse Leader Lab (314 responses in Spring 2026):
+63% of respondents say AI tools save ≥3 hours/week.
+38% say they save >5 hours/week. 
+Perceived relevance and confidence Across the org:
+Confidence in AI: 3.29 → 3.74 (2025 → 2026) on a 5-point scale.
+Relevance of AI to respondents’ work: 3.50 → 4.17. 
+For IT / Product Development specifically:
+Confidence: 3.72 → 4.05.
+Relevance: 4.07 → 4.48. 
+Qualitative themes Positive:
+AI is a normal part of daily work (85% report using AI several times per day);
+High-value use cases in engineering and finance (e.g., forecasting models, sanctions-list agents). 
+Concerns:
+Job replacement anxiety, junior learning erosion, hallucination/comprehension debt, and AI fatigue. 
+2.5.3 Cycle time, tickets-to-MR, and quality metrics
+Design intent The Technology AI Adoption Plan calls for:
+Measuring PR cycle time, % AI-assisted PRs, incident/change-failure rate, coverage deltas, and DevX satisfaction for lighthouse teams. 
+Directional targets: 15–25% improvement in ticket-to-merge with no worsening of incident rates. 
+Implementation status
+BigQuery marts (fct_ai_adoption__*) and the TLT executive summary skill compute cycle time, velocity per engineer, Human Leverage Ratio (HLR), and AI-assisted share from Jira and AI adoption tables. 
+However, there is currently no single, stable published “before vs after DevX” report; these metrics are used in leadership briefings and custom analyses, but not consolidated for all teams in a public dashboard.
+  2.6 How Agent Output Quality is Evaluated
+Evaluation is multi-layered, combining automatic hooks, structured rubrics, CI gates, human review, and higher-level analytics.
+2.6.1 Automatic evaluation and guardrails
+Guardrail hooks in coco-ai-core – pre/post-tool hooks block dangerous commands and sensitive reads, validate writes, and audit activity.   
+Ticket-to-MR workflow rubrics – The original workflow library (pre-coco-ai-core restructuring) stores JSON outputs for each phase (requirements analysis, plan, implementation, unit tests, automation test plan, change summary). The change-summary phase aggregates: – Requirements compliance (which ACs satisfied), – Quality metrics (tests, coverage, docs, code quality score), – Risk assessment and next steps, into agent-task-outputs/change-summary.json.   
+CI and pytest-coco – AI-authored tests must satisfy: – Required markers: CoCoInfo/CoCoInfoSkip, CoCoEnvironment, CoCoGate, CoCoServices. – --strict-markers is injected automatically, so unknown/missing markers fail fast. – Regression rule: every bug fix must ship a failing-before test with a Jira-linked name.   
+Security review automation – ai-security-review skills/agents, the security-sweep skill, and the adversarial-review plugin collectively provide structured security evaluation of AI config, skills, and MRs, looking at AWARE criteria, CC.14.2.1 attack surface, allowed-tools fencing, and injection surfaces.   
+CoCo Sentinel – Multi-agent system (Security, Test Intelligence, Flaky Doctor, Architecture, QA agents) that reads code, tests, CI data, and Jira to produce quality verdicts and actionable fixes. It is designed as both a CI gate and a continuous quality scorecard on top of coco-ai-core skills.   
+Experiment harnesses (Count-Anything) – For ML pipelines, agent-proposed changes are evaluated via ratcheting metrics (mean F1, AP, precision, recall) and automatically kept/reverted based on thresholds, with experiment logs for audit.   
+Knowledge-agent anti-hallucination mechanisms – Claim–Evidence–Confidence contract, conflict preservation, TTL/staleness controls, and confidence thresholds ensure insights are traceable to evidence and low-confidence outputs are flagged or suppressed.   
+2.6.2 Human evaluation and review loops
+Mandatory MR review – All agentic workflows culminate in a GitLab MR; human peers review, comment, and approve or reject. Project Replicant further requires structured MR narratives that explicitly direct reviewers’ focus (what was done, what wasn’t, highest-risk change, where to review).   
+Ticket/plan review gates (DPP review) – /dpp-review-idea and /dpp-review-plan perform idea- and plan-level LLM reviews and then label Jira tickets accordingly; they are explicitly designed to stop at “developer acknowledges findings” before any downstream planning or implementation skills run.   
+Developer feedback skills – /collect-feedback and /learn-from-mistakes capture experiential feedback and encode it back into AGENTS.md/CLAUDE.md and Confluence docs, closing the loop between bad runs and prompts/skills.   
+Champion and leadership feedback – AI Champions and AI Pulse (exec) reports collect narrative updates and high-level feedback, informing where to invest further evaluation or tighten guardrails.   
+Glean agent feedback – For Glean-hosted agents, upvotes/downvotes, “runs by outcome” (success/failed/paused), and per-run traces are used to judge quality and guide tuning.   
+2.6.3 Metrics and scorecards
+AI Adoption metrics framework – As noted earlier, metrics include AI-assisted PR%, cycle time, acceptance rates, change-failure rates, coverage deltas, and satisfaction/time-saved measures.   
+Agent Health Scorecards (Project Replicant) – Designed to track per-agent: – MR rejection rate, – CI failure rate per N PRs, – Human override frequency, – Coverage deltas from QA agent, – Stage and end-to-end cycle time, – Token/cost per PR. Alerts fire on ≥15% deviation from baseline; AI COE reviews these monthly.   
+Sentinel scorecards – sentinel-scorecard-agent reads analysis artifacts, compares to previous scorecards, and publishes Confluence updates plus Jira tickets for regressions, giving repos a trend of quality metrics over sprints.   
+Glean agent insights – Usage, runs by outcome, voting sentiment, and (optionally) time-saved estimates allow the AI COE to spot high-leverage agents and under-performing ones.   
