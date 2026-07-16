@@ -1,0 +1,62 @@
+---
+slug: taming-search-tail-latency
+title: "Deep Dive: Taming a 9-Second Tail Latency"
+date: 2026-07-01
+featured: false
+category: Deep Dive
+tags:
+  - Elasticsearch
+  - C#/.NET
+  - Performance
+  - Search
+  - Load Testing
+links:
+  repo: ""
+  demo: ""
+  writeup: "/projects/taming-search-tail-latency"
+hero:
+  summary: "Worst-case search queries had a p99 of ~9.4 seconds. Redesigning cross-search brought it to ~1.4s — and a production memory incident along the way taught us as much as the redesign did."
+  impactBullets:
+    - "Worst-case p99 latency: ~9.4s → ~1.4s; steady-load p95 ~250ms"
+    - "Zero failures across 220k-request load campaigns at up to 8× production peak"
+images: []
+---
+
+# Summary
+
+Our Elasticsearch-powered search API serves 75,000+ customers against a corpus of 360k+ curated projects. Typical queries were fast — but the worst-case patterns, cross-entity searches with heavy mixed filters, had a tail that told a different story: **p95 around 1.5 seconds and p99 around 9.4 seconds** under load. This is the story of redesigning cross-search to bring that p99 down to ~1.4 seconds, and of the production memory incident along the way that hardened how we ship.
+
+## The Problem
+
+Percentiles hide sins. Our median cross-search latency looked respectable (~545ms), but the p99 was ~9.4s — meaning the unluckiest searches, often the most complex and valuable ones, were effectively timing out from the user's perspective. The culprit patterns combined searches across entity types with worst-case filter mixes that the original query construction handled by doing too much work in too few places.
+
+## The Redesign
+
+We rebuilt the cross-search implementation around the query shapes that actually hurt, and validated it the same way we found the problem — synthetic load campaigns (k6) tied to production traffic levels:
+
+- **Stress scenario** (variable load, up to ~50 RPS): p50 ~200ms, p95 ~1.0s, **p99 ~1.4s** — the 9.4s tail cut by ~85%
+- **Steady load scenario**: p50 ~120ms, **p95 ~250ms**, p99 ~350ms
+- **Zero failures** — no 5xx errors or timeouts across 220k+ requests
+- Test throughput ran at up to **~8× production peak**, so the headroom is measured, not hoped for
+
+The same testing discipline extends to relevance work: before shipping hybrid ranking (RRF) and proximity search, we quantified their latency cost under load — proximity turned out to be ~1% overhead; hybrid ranking's cost was real and became an explicit relevance-vs-latency decision rather than a surprise.
+
+## The Incident
+
+Mid-rollout, a production deploy sent memory climbing to 100% on the search service. We rolled back the same day, then dug in. Root cause: for large responses, the service was **building entire NDJSON payloads as huge in-memory strings**, creating large-object-heap pressure that accumulated until the service tipped over.
+
+The fix was structural, not a tuning knob:
+
+1. **Stream NDJSON directly to the response** instead of materializing it — memory now rises and falls proportionally to load
+2. **Cap oversized requests to fail fast**, so a pathological request degrades one response instead of the whole service
+
+We redeployed a week later with load tests confirming no recurrence.
+
+## Lessons
+
+- **Chase the tail, not the median.** The p99 is where your most complex — often most valuable — queries live.
+- **Load-test at multiples of production, and load-test the worst case.** Well-shaped queries told us nothing; the pathological mixes were the whole story.
+- **A same-day rollback is a feature.** Deploy checklists with rollback plans meant the incident cost hours, not days — and the root cause got a durable fix instead of a patch under pressure.
+- **Quantify tradeoffs before shipping them.** Relevance improvements that cost latency should be decisions, not discoveries.
+
+_Details sanitized: no internal product, cluster, or index names; figures from synthetic load campaigns tied to production traffic levels._

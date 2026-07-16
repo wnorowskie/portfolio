@@ -1,0 +1,61 @@
+---
+slug: doc-viewer-performance
+title: "Deep Dive: Sub-Second Pages from 1,000-Page Documents"
+date: 2025-11-15
+featured: false
+category: Deep Dive
+tags:
+  - Performance
+  - Next.js
+  - Python
+  - Redis
+  - WebSockets
+  - Microservices
+links:
+  repo: ""
+  demo: ""
+  writeup: "/projects/doc-viewer-performance"
+hero:
+  summary: "How we rebuilt a document viewer so 1,000-page construction documents render ~5–10× faster — by fetching less, streaming more, and measuring everything in between."
+  impactBullets:
+    - "First-page loads on the largest documents: from 19–45 seconds to single digits"
+    - "Core backend API p95 cut from ~384ms to ~138ms (−64%)"
+images: []
+---
+
+# Summary
+
+Construction specs and plans are enormous — real documents run 900 to 1,100+ pages. The legacy viewer could take **19–45 seconds** to show the first page of a document that size, and 1–2 seconds for every page after. We rebuilt the viewer (React/Next.js frontend, Python backend services) around a simple principle: *show something useful as fast as possible, and never make the user wait for data they haven't asked for yet.* Per-page render time dropped to **~0.2 seconds** — roughly 5–10× faster — and the core backend API's p95 fell from ~384ms to ~138ms.
+
+## The Problem
+
+The legacy viewer's slowness had two root causes, neither of them "rendering":
+
+1. **Greedy database operations** — the backend fetched far more than the first paint needed, so users paid the cost of the whole document before seeing any of it.
+2. **Poor communication between backend microservices** — data hopped through services with no coordination around what the frontend actually needed next, and nobody could say where the time was going.
+
+## What Worked
+
+**1. Fetch the minimum, then load progressively.** We restructured database operations around the first paint: grab only what's needed to render the current view, return it immediately, and progressively load the rest in the background. The user sees page one while page two hundred is still in flight.
+
+**2. A listener service to unify backend-to-frontend delivery.** Instead of the frontend polling several backend services, we built a listener service whose only job is to take information from any of the backend services and relay it to the frontend the moment it's ready — Redis as the cache, WebSocket as the delivery channel. Data displays as fast as the slowest *relevant* service, not the slowest service overall.
+
+**3. Measure the seams, not just the total.** We instrumented overall document load time, but more importantly the individual hops between microservices. That's what turned "the viewer is slow" into "this specific handoff is the bottleneck" — and each fix was verified against those same measurements.
+
+## The Dead End
+
+We spent time trying to reduce the number of requests needed to run a keyword search across a document's pages. It looked wasteful on paper. But collapsing the requests would have required shipping significantly more data from the viewer's side — and when we actually load-tested it, the search API handled the existing request volume without strain. We dropped it. **Lesson: an "inefficiency" that no measurement complains about is not a bottleneck — it's a distraction.**
+
+## Results
+
+- Per-page render time ~5–10× faster (to ~0.2s/page) on documents up to 1,100 pages
+- First-page loads on the largest specs down from 19–45s to single-digit seconds
+- Core backend API p95: ~384ms → ~138ms (−64%), with 500-error behavior under load eliminated
+- The service now handles ~100k document-project loads per day, with performance test suites run as a release gate
+
+## What I'd Improve Next
+
+- Push progressive loading deeper — predictive prefetch based on how users actually navigate documents
+- Extend the inter-service timing instrumentation into standing dashboards rather than per-investigation tooling
+
+_Details sanitized: architecture and results described at a high level, no internal service or product names._

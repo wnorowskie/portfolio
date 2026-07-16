@@ -1,0 +1,65 @@
+---
+slug: guardrails-for-coding-agents
+title: "Deep Dive: Guardrails for Agents That Write Code"
+date: 2026-05-15
+featured: false
+category: Deep Dive
+tags:
+  - AI
+  - Agents
+  - Security
+  - Claude Code
+  - Developer Experience
+links:
+  repo: ""
+  demo: ""
+  writeup: "/projects/guardrails-for-coding-agents"
+hero:
+  summary: "Letting AI agents write production code is a trust problem before it's a capability problem. How we designed guardrails that don't depend on the agent's cooperation."
+  impactBullets:
+    - "Deterministic hooks on every tool call — guardrails that can't be prompted away"
+    - "Trust-but-verify orchestration: agent claims are hypotheses until re-validated in code"
+images: []
+---
+
+# Summary
+
+The hard part of agentic development isn't getting an AI to write code — it's being able to *trust* what happened while it did. Rolling out agentic workflows across an engineering organization (see [DevX AI Enablement](/projects/devx-ai-enablement)), we treated safety as an architecture problem with a core principle: **guardrails must not depend on the agent's cooperation.**
+
+## The Problem
+
+A coding agent with shell access can, in principle, do anything a developer can: force-push, drop tables, read secrets, pipe remote scripts into a shell. Prompt-level instructions ("never do X") are suggestions to a system whose whole job is creative interpretation — and they're one prompt-injection away from being overridden. If agents were going to touch real repositories at organizational scale, "we asked it nicely" could not be the security model.
+
+## The Design
+
+**Layer 1 — Deterministic hooks on every tool call.** Code, not prompts, sits between the agent and the world:
+
+- Destructive shell patterns are blocked outright — destructive filesystem operations, force pushes, piped remote scripts, destructive SQL
+- Reads of sensitive files (env files, secrets) are blocked at the tool layer
+- Every write is validated against security rules before it lands, and audited after
+- Hooks fire on every tool call, unconditionally. There is no prompt that turns them off.
+
+**Layer 2 — Least privilege by construction.** Each skill declares an explicit tool allowlist — a security-scan skill can grep and run audit commands but cannot modify files. Integrations with external systems (tickets, repos, data warehouses) inherit the *developer's own* access via MCP: an agent never has permissions its human doesn't.
+
+**Layer 3 — Trust but verify.** The workflow orchestrator treats agent output as a hypothesis: it independently re-runs the tests, checks that claimed branches and commits actually exist, and validates required artifacts before any phase advances. An agent saying "all tests pass" is the beginning of verification, not the end.
+
+**Layer 4 — Hard stops and human gates.** Secret detection halts everything until resolved. And three things we deliberately refused to automate: approving the plan, approving the commit, and merging. Every merge request an agent produces is labeled as AI-assisted and reviewed by a human like any other change.
+
+## Key Tradeoffs
+
+- **Hooks over prompts** costs flexibility — a blocked-but-legitimate command needs a policy change, not a persuasive prompt. We took that trade: predictability is the product.
+- **Human gates at every phase** are slower than full autonomy. But they keep the developer the author of the change rather than its spectator — which is what made org-wide adoption possible at all.
+- **Observability as a guardrail:** every session is traced (OpenTelemetry) into org dashboards. Behavior at scale is measured, not anecdotal — which is also how you find out which guardrails are actually earning their keep.
+
+## Results
+
+- Agentic workflows adopted across the engineering org — roughly 3 in 4 product engineers weekly-active — *because* of the guardrails, not despite them
+- A repeatable, auditable ticket-to-merge-request path where every action is constrained, validated, and logged
+- Security posture that survives the failure mode prompts can't: an agent that's been manipulated
+
+## What I'd Improve Next
+
+- Centrally managed, unbypassable hook enforcement (in progress organizationally)
+- Per-agent health scorecards — rejection rates, override frequency, CI failures — as a standing feedback loop on guardrail effectiveness
+
+_Details sanitized: internal tool and program names removed; mechanisms described at a high level._
