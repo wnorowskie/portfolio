@@ -2,12 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import ExternalLink from "@/components/external-link";
 import ProjectCard from "@/components/project-card";
-import { getFeaturedProjects } from "@/lib/content";
+import { getAllProjects, getFeaturedProjects } from "@/lib/content";
 import { getSiteConfig } from "@/lib/site";
 
 export default function Home() {
   const site = getSiteConfig();
   const featuredProjects = getFeaturedProjects();
+  const deepDives = getAllProjects().filter(
+    (project) => project.category === "Deep Dive"
+  );
 
   const personJsonLd = {
     "@context": "https://schema.org",
@@ -95,6 +98,35 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {deepDives.length > 0 ? (
+        <section className="space-y-6">
+          <div className="space-y-2">
+            <h2 className="font-display text-2xl text-ink">Engineering deep dives</h2>
+            <p className="max-w-2xl text-sm text-ink/70">
+              Longer-form stories about production work — the problem, the tradeoffs, and
+              what actually happened.
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {deepDives.map((story) => (
+              <Link
+                key={story.slug}
+                className="group flex h-full flex-col gap-3 rounded-2xl border border-ink/10 bg-white/70 p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-ink/30 hover:shadow-md"
+                href={`/projects/${story.slug}`}
+              >
+                <h3 className="text-base font-semibold leading-snug text-ink">
+                  {story.title.replace(/^Deep Dive:\s*/, "")}
+                </h3>
+                <p className="text-sm leading-6 text-ink/70">{story.hero.summary}</p>
+                <span className="mt-auto text-sm font-semibold text-ink/70 transition group-hover:text-ink">
+                  Read the story →
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="grid gap-6 md:grid-cols-[1fr_1.1fr] md:items-start">
         <div className="space-y-4">
