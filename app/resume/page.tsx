@@ -62,49 +62,47 @@ export default function ResumePage() {
           </h3>
           <div>
             <p className="font-semibold text-ink">ConstructConnect — Cincinnati, Ohio (Remote)</p>
-            <p className="mt-2 font-medium text-ink">Software Engineer II</p>
+            <p className="mt-2 font-medium text-ink">Software Engineer II · ConstructConnect Platform</p>
             <ul className="mt-1 list-disc space-y-1 pl-5">
               <li>
-                Develop a high-performance C#/.NET Elasticsearch-powered API enabling faster and
-                more insightful data capabilities for 75,000+ customers, used in the flagship
-                product ConstructConnect Project Intelligence.
+                Cut p99 search latency ~9.4s → ~1.4s (p95 ~250ms) on the flagship search API
+                cross-search rollout, validated with 220k-request load campaigns at up to 8×
+                production peak with zero 5xx errors.
               </li>
               <li>
-                Develop Python, C#, and Logstash data ingestion pipelines that move data from
-                relational stores (SQL Server) into Elastic, enforcing schema consistency,
-                deduplication, parent-child relationships, and real-time indexing.
+                Own event-driven ingestion pipelines (C#, Python, Logstash) keeping a 360k+
+                project search corpus fresh on 30-minute delta cycles across seven pipelines,
+                serving 75,000+ customers.
               </li>
               <li>
-                Manage DevOps for Google Cloud Run services, Elastic deployments, and monitoring
-                through Terraform and GitLab — tightening reliability, system performance, and
-                security.
+                Operate a multi-tier (hot/warm/cold) production Elasticsearch deployment (~7TB),
+                shipping to production multiple times per month behind security scans and
+                rollback plans.
               </li>
             </ul>
             <p className="mt-3 font-medium text-ink">Software Engineer I · Modernized Search</p>
             <ul className="mt-1 list-disc space-y-1 pl-5">
               <li>
-                Develop a modern React/Next.js (TypeScript) frontend application and Python
-                backend apps for a modernized document viewer — reducing per-page render times
-                roughly 5–10× on documents up to 1,100 pages and cutting the core backend API
-                p95 latency by 64%.
+                Built a modern React/Next.js (TypeScript) document viewer with Python backend —
+                cut per-page renders ~5–10× (to ~0.2s/page) on docs up to 1,100 pages and
+                backend API p95 ~384ms → ~138ms (−64%).
               </li>
               <li>
-                Partner with Quality Engineering to build Python automation, end-to-end, and
-                performance tests for APIs and pipelines, catching regressions pre-release and
-                validating SLAs under realistic production loads.
+                Partnered with Quality Engineering to make k6/pytest performance suites a
+                release gate — serving ~100k document-project loads per day.
               </li>
             </ul>
             <p className="mt-3 font-medium text-ink">Associate Software Engineer</p>
             <ul className="mt-1 list-disc space-y-1 pl-5">
               <li>
-                Co-designed and implemented a modern cloud-native document processing pipeline
-                that replaces a legacy system, significantly reducing manual intervention and
-                improving throughput.
+                Co-designed the cloud-native document processing pipeline that now carries 100%
+                of document traffic (~291k packages, 75M+ pages annually), fully replacing the
+                legacy OCR stack.
               </li>
               <li>
-                Built a suite of Node.js (TypeScript) microservices orchestrated with Google
-                Cloud Functions to classify, transform, and route documents through the
-                pipeline, with hybrid operation alongside the legacy system.
+                Cut package resubmission from 21.5% to under 1% (~96% less manual intervention),
+                sustaining ~350k pages/day; built the Node.js (TypeScript) microservices on
+                Cloud Functions that run it.
               </li>
             </ul>
             <p className="mt-3 font-medium text-ink">Data Science Intern · Takeoff Boost</p>
@@ -143,8 +141,8 @@ export default function ResumePage() {
                 DevOps pipeline, infrastructure-as-code, observability, and application security.
               </li>
               <li>
-                Tech: Next.js, React, Python, Postgres, Terraform, Google Cloud (Run, SQL,
-                Registry, Monitoring), GitHub.
+                Tech: Next.js frontend, Python API on Cloud Run, Cloud SQL Postgres, GCS
+                uploads, GitHub Actions CI/CD (security + unit/e2e gates), Terraform.
               </li>
             </ul>
           </div>
@@ -157,9 +155,9 @@ export default function ResumePage() {
                 development lifecycle.
               </li>
               <li>
-                Developed an agentic development workflow guiding agents from picking up a JIRA
-                ticket to making code changes, updating documentation, creating a merge request,
-                and drafting a testing plan.
+                Built an agentic workflow taking agents from a JIRA ticket to code changes,
+                docs, a merge request, and a testing plan — adopted by ~3 in 4 product engineers
+                weekly with a ~98% suggestion-acceptance rate.
               </li>
             </ul>
           </div>
