@@ -22,6 +22,7 @@ hero:
     - "Shipped an end-to-end app used by family to share and preserve recipes"
     - "Infra-as-code and CI/CD designed for maintainability"
 images:
+  - "/images/projects/family-recipe-app/architecture.png"
   - "/images/projects/family-recipe-app/timeline.png"
   - "/images/projects/family-recipe-app/search.png"
   - "/images/projects/family-recipe-app/profile.png"
@@ -39,10 +40,11 @@ We needed a centralized place to share recipes without relying on group chats or
 
 ## Architecture
 
-- Next.js frontend + API layer
-- Python services for background processing
-- Postgres for core data storage
-- Terraform-managed infrastructure on GCP
+- Next.js frontend on Cloud Run, with a dedicated Python API handling data access
+- Task-specific Python microservices for background jobs
+- Cloud SQL Postgres for core data; Cloud Storage for recipe photo uploads
+- GitHub Actions CI/CD gating every change with security scans, unit, and e2e tests
+- Terraform-managed infrastructure on GCP (Cloud Run, Cloud SQL, GCS, monitoring, IAM)
 
 ## Key Technical Decisions + Tradeoffs
 
@@ -69,5 +71,5 @@ We needed a centralized place to share recipes without relying on group chats or
 ## Evidence
 
 - [GitHub Repo](https://github.com/wnorowskie/family-recipe)
-- App screenshots (above)
+- Architecture diagram and app screenshots (above)
 - Walkthrough video coming soon
